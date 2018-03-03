@@ -1,0 +1,7 @@
+.DS_Store
+client/.DS_Store
+client/dev/.DS_Store
+client/dist/bundle.js
+database/config.js
+node_modules/
+package-lock.json

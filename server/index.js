@@ -102,6 +102,42 @@ app.post('/shift/remove', (req, res) => {
   });
 });
 
+app.post('/signup', (req, res) => {
+  db.signUp(req.body, (stat, result) => {
+    if (stat) {
+      console.log(result);
+      res.status(200).send(result);
+    } else {
+      console.log(result);
+      res.status(400).send(result);
+    }
+  });
+});
+
+app.post('/login/admin', (req, res) => {
+  db.adminLogin(req.body, (stat, result) => {
+    if (stat) {
+      console.log(result);
+      res.status(200).send(result);
+    } else {
+      console.log(result);
+      res.status(400).send(result);
+    }
+  });
+});
+
+app.post('/login/employee', (req, res) => {
+  db.employeeLogin(req.body, (stat, result) => {
+    if (stat) {
+      console.log(result);
+      res.status(200).send(result);
+    } else {
+      console.log(result);
+      res.status(400).send(result);
+    }
+  });
+});
+
 app.listen(3333, () => {
   console.log('listening on port 3333');
 });

@@ -11,8 +11,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       user: {
-        id: 1,
-        name: 'rory',
+        id: this.props.id,
+        admin: this.props.admin,
       },
       showCal: false,
       employees: {},

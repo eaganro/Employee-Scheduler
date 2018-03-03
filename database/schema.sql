@@ -8,6 +8,8 @@ CREATE TABLE users (
   id INTEGER NOT NULL AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
+  empname VARCHAR(255) NOT NULL,
+  emppassword VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -46,4 +48,4 @@ CREATE TABLE shifts (
   UNIQUE KEY week (week, day, employee_id, user_id)
 );
 
-INSERT INTO users (username, password) VALUES ('rory', 'eagan');
+INSERT INTO users (username, password, empname, emppassword) VALUES ('rory', 'eagan', 'dude', 'word');

@@ -90,6 +90,47 @@ const getShifts = (userID, callback) => {
   });
 };
 
+const signUp = (data, callback) => {
+  const {
+    username,
+    password,
+    empname,
+    emppass,
+  } = data;
+  connection.query(`INSERT INTO users (username, password, empname, emppassword) values ('${username}', '${password}', '${empname}', '${emppass}' );`, (err, result) => {
+    if (err) {
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+};
+
+const adminLogin = (data, callback) => {
+  const {
+    username,
+    password,
+  } = data;
+  connection.query(`SELECT * FROM users WHERE username='${username}' AND password='${password}';`, (err, result) => {
+    if (err) {
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+};
+
+const employeeLogin = (data, callback) => {
+  const {
+    username,
+    password,
+  } = data;
+  connection.query(`SELECT * FROM users WHERE empname='${username}' AND emppassword='${password}';`, (err, result) => {
+    if (err) {
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+};
+
 module.exports = {
   addEmployee,
   removeEmployee,
@@ -100,4 +141,7 @@ module.exports = {
   addShift,
   removeShift,
   getShifts,
+  signUp,
+  adminLogin,
+  employeeLogin,
 };
