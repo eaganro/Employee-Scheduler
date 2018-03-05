@@ -14,7 +14,7 @@ export default class App extends React.Component {
         id: this.props.id,
         admin: this.props.admin,
       },
-      showCal: false,
+      showCal: !this.props.admin,
       employees: {},
       times: {},
       schedule: [
@@ -29,6 +29,8 @@ export default class App extends React.Component {
         ],
       ],
       week: 0,
+      savedDay: {},
+      savedWeek: {},
     };
     this.addEmployee = this.addEmployee.bind(this);
     this.removeEmployee = this.removeEmployee.bind(this);
@@ -39,6 +41,10 @@ export default class App extends React.Component {
     this.addEmployeeShift = this.addEmployeeShift.bind(this);
     this.removeShift = this.removeShift.bind(this);
     this.nextWeek = this.nextWeek.bind(this);
+    this.copyDay = this.copyDay.bind(this);
+    this.pasteDay = this.pasteDay.bind(this);
+    this.copyWeek = this.copyWeek.bind(this);
+    this.pasteWeek = this.pasteWeek.bind(this);
 
 
     this.getEmployees = this.getEmployees.bind(this);
@@ -48,6 +54,59 @@ export default class App extends React.Component {
     this.getEmployees();
     this.getTimes();
     this.getShifts();
+  }
+
+  pasteWeek() {
+    const { savedWeek } = this.state
+    if(savedWeek.week !== this.state.week) {
+      for (let i = 0; i < savedWeek.emps.length; i += 1) {
+        for (let j = 0; j < savedWeek.emps[i].length; j += 1) {
+          this.changeEmployeeTime(savedWeek.emps[i][j], savedWeek.times[i][j], i, this.state.week);
+        }
+      }
+    }
+  }
+
+  copyWeek() {
+    const employeeIds = this.state.schedule[this.state.week];
+    const timeIds = employeeIds.map((d, idx) => {
+      return d.map((e) => {
+        return this.state.employees[e].shifts[this.state.week][idx];
+      });
+    });
+    const savedWeek = {
+      week: this.state.week,
+      emps: employeeIds,
+      times: timeIds,
+    };
+    this.setState({
+      savedWeek,
+    });
+  }
+
+  pasteDay(week, day) {
+    const { savedDay } = this.state
+    if(!(savedDay.week === week && savedDay.day === day)) {
+      for (let i = 0; i < savedDay.emps.length; i += 1) {
+        this.changeEmployeeTime(savedDay.emps[i], savedDay.times[i], day, week);
+      }
+    }
+  }
+
+  copyDay(week, day) {
+    const employeeIds = this.state.schedule[week][day];
+    const timeIds = employeeIds.map((e) => {
+      return this.state.employees[e].shifts[week][day];
+    });
+    const savedDay = {
+      week,
+      day,
+      emps: employeeIds,
+      times: timeIds,
+    };
+    this.setState({
+      savedDay,
+    });
   }
 
   getEmployees() {
@@ -101,8 +160,6 @@ export default class App extends React.Component {
     }).then((response) => {
       const { data } = response;
       const { employees, schedule, times } = this.state;
-      console.log(response.data);
-
       const max = response.data.reduce((a, c) => {
         if (c.week > a) {
           return c.week;
@@ -123,11 +180,11 @@ export default class App extends React.Component {
         }
       }
 
-      for (let i = 0; i < schedule.length; i += 1) {
-        for (let j = 0; j < 7; j += 1) {
-          schedule[i][j].sort();
-        }
-      }
+      // for (let i = 0; i < schedule.length; i += 1) {
+      //   for (let j = 0; j < 7; j += 1) {
+      //     schedule[i][j].sort();
+      //   }
+      // }
 
       Object.keys(employees).forEach((e) => {
         employees[e].shifts.forEach((s, i) => {
@@ -231,6 +288,8 @@ export default class App extends React.Component {
       employeeId,
     }).then(() => {
       console.log('herer');
+      let emps = this.state.employees;
+      emps[employeeId].shifts[week][day] = undefined;
       this.getShifts();
     });
   }
@@ -257,6 +316,17 @@ export default class App extends React.Component {
       <div>
         {this.state.showCal ?
           <div>
+            {this.state.user.admin ?
+              <span>
+                <button
+                  onClick={() => this.setState({ showCal: false })}
+                >
+                  Back to Employee and Time Edit
+                </button> 
+                <button onClick={this.copyWeek}>Copy Week</button>
+                <button onClick={this.pasteWeek}>Paste Week</button>
+              </span> :
+              ''}
             <button
               onClick={() => this.setState({ week: this.state.week - 1 })}
               style={{
@@ -276,6 +346,9 @@ export default class App extends React.Component {
                 schedule={this.state.schedule}
                 dayNum={i}
                 weekNum={this.state.week}
+                admin={this.state.user.admin}
+                copyDay={this.copyDay}
+                pasteDay={this.pasteDay}
               />
             ))}
           </div> :

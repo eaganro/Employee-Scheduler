@@ -1,10 +1,22 @@
 const express = require('express');
 const parser = require('body-parser');
 const db = require('../database/');
+var session = require('express-session');
 
 const app = express();
 
+
+app.use(session({
+  secret: 'schedule',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 app.use(parser.json());
+app.use((req, res, next) => {
+  if(req.session)
+  next();
+});
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/employee/add', (req, res) => {

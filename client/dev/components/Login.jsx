@@ -58,7 +58,7 @@ export default class Login extends React.Component {
       if (data.data.length > 0) {
         this.setState({
           loggedIn: true,
-          id: data.data.id,
+          id: data.data[0].id,
           admin: false,
         });
       }
@@ -70,10 +70,11 @@ export default class Login extends React.Component {
       username: this.state.username,
       password: this.state.password,
     }).then((data) => {
+      console.log(data.data);
       if (data.data.length > 0) {
         this.setState({
           loggedIn: true,
-          id: data.data.id,
+          id: data.data[0].id,
           admin: true,
         });
       }

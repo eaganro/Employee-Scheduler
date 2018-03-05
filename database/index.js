@@ -61,9 +61,10 @@ const getTimes = (userID, callback) => {
   });
 };
 
+//REPLACE INTO shifts (week, day, employee_id, time_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${userId})
 const addShift = (state, callback) => {
   const { week, day, employeeId, timeId, userId } = state;
-  connection.query(`REPLACE INTO shifts (week, day, employee_id, time_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${userId})`, (err, result) => {
+  connection.query(`INSERT INTO shifts (week, day, employee_id, time_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${userId}) ON DUPLICATE KEY UPDATE time_id=${timeId};`, (err, result) => {
     if (err) {
       callback(false, err);
     }

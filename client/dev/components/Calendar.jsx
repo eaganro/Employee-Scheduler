@@ -12,7 +12,7 @@ export default class Calender extends React.Component {
 
 
   render() {
-    const { schedule, employees, dayNum, weekNum } = this.props;
+    const { schedule, employees, dayNum, weekNum, admin, copyDay, pasteDay } = this.props;
     const dayName = {
       0: 'Sunday',
       1: 'Monday',
@@ -46,21 +46,26 @@ export default class Calender extends React.Component {
             dayNum={dayNum}
             weekNum={this.props.weekNum}
             removeShift={this.props.removeShift}
+            admin={admin}
           />
         ))}
-        <div>
-          Add Employee: <br />
-          <select onChange={(e) => {
-            if (e.target.selectedIndex !== 0) {
-              this.props.addES(e.target.value, dayNum, weekNum);
-              e.target.selectedIndex = 0;
-            }
-          }}
-          >
-            <option />
-            {empOpts}
-          </select>
-        </div>
+        {admin ?
+           <div>
+            Add Employee: <br />
+            <select onChange={(e) => {
+              if (e.target.selectedIndex !== 0) {
+                this.props.addES(e.target.value, dayNum, weekNum);
+                e.target.selectedIndex = 0;
+              }
+            }}
+            >
+              <option />
+              {empOpts}
+            </select>
+            <button onClick={() => copyDay(weekNum, dayNum)}>Copy</button>
+            <button onClick={() => pasteDay(weekNum, dayNum)}>Paste</button>
+          </div> :
+          ''}
       </div>
     );
   }
