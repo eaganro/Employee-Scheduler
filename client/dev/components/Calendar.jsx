@@ -27,7 +27,9 @@ export default class Calender extends React.Component {
         <h3>{thisDate.toDateString()}</h3>
         {[...Array(25)].map((x, i) => (
           <div className={i === 0 ? styles.firstCol : styles.topRow}>
-            {i === 0 ? ' ' : (i-1)%2=== 0 ? 8+((i - 1) / 2) + ':00' : 8+((i - 1) / 2)-0.5 + ':30'}
+            <span>
+              {i === 0 ? ' ' : (i-1)%2=== 0 ? 8+((i - 1) / 2) + ':00' : 8+((i - 1) / 2)-0.5 + ':30'}
+            </span>
           </div>
         ))}
         {schedule[weekNum][dayNum].map(e => (

@@ -73,13 +73,14 @@ button {
   text-align: center;
 }
 
+
 .calRow {
-  background-color: black;
+  background-color: lightgray;
   display: inline-block;
   width: 40px;
   height: 40px;
-  border: 1px solid white;
-  color: white;
+  border: 1px solid black;
+  color: black;
   vertical-align: top;
   text-align: center;
 }
@@ -90,6 +91,11 @@ button {
   height: 40px;
   border: 1px solid black;
   vertical-align: top;
+}
+
+.cellText {
+  position: relative;
+  top: 25%;
 }
 
 .firstCol {

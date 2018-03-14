@@ -388,11 +388,6 @@ export default class App extends React.Component {
         <div className={styles.calendarArea}>
           {this.state.user.admin ?
             <span>
-              <button
-                onClick={() => this.setState({ showCal: false })}
-              >
-                Back to Employee and Time Edit
-              </button> 
               <button onClick={this.copyWeek}>Copy Week</button>
               <button onClick={this.pasteWeek}>Paste Week</button>
             </span> :

@@ -35,7 +35,9 @@ export default class CalenderRow extends React.Component {
 
         {[...Array(24)].map((h, i) => (
           <div className={shifts[weekNum][dayNum] >= 0 && (i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart && (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd ? styles.calRow : styles.calRowOff}>
-            {shifts[weekNum][dayNum] >= 0 && (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart && (i / 2) + 8 < times[shifts[weekNum][dayNum]].bEnd ? 'B' : ' '}
+            <span className={styles.cellText}>
+              {shifts[weekNum][dayNum] >= 0 && (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart && (i / 2) + 8 < times[shifts[weekNum][dayNum]].bEnd ? 'B' : ' '}
+            </span>
           </div>
         ))}
         {admin ?
