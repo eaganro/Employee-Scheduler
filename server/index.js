@@ -79,6 +79,36 @@ app.post('/time', (req, res) => {
   });
 });
 
+app.post('/calendar/add', (req, res) => {
+  db.addCalendar(req.body, (stat, result) => {
+    if (stat) {
+      res.status(200).send(result);
+    } else {
+      res.status(422).send(result);
+    }
+  });
+});
+
+app.post('/calendar/remove', (req, res) => {
+  db.removeCalendar(req.body, (stat, result) => {
+    if (stat) {
+      res.status(200).send(result);
+    } else {
+      res.status(422).send(result);
+    }
+  });
+});
+
+app.post('/calendar', (req, res) => {
+  db.getCalendars(req.body.id, (stat, result) => {
+    if (stat) {
+      res.status(200).send(result);
+    } else {
+      res.status(400).send(result);
+    }
+  });
+});
+
 app.post('/shift', (req, res) => {
   db.getShifts(req.body.id, (stat, result) => {
     if (stat) {
@@ -115,12 +145,13 @@ app.post('/shift/remove', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-  db.signUp(req.body, (stat, result) => {
+  db.signUp(req.body, (stat, result, calID) => {
     if (stat) {
       console.log(result);
       res.status(200).send(result);
     } else {
       console.log(result);
+      result[0].calID = calID;
       res.status(400).send(result);
     }
   });

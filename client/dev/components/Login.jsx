@@ -11,11 +11,13 @@ export default class Login extends React.Component {
       password: '',
       empname: '',
       emppass: '',
-      empLogin: true,
+      empLogin: false,
       signup: false,
       loggedIn: false,
       id: 1,
       admin: false,
+      date: null,
+      calID: null,
     };
     this.nameChange = this.nameChange.bind(this);
     this.passChange = this.passChange.bind(this);
@@ -60,6 +62,7 @@ export default class Login extends React.Component {
           loggedIn: true,
           id: data.data[0].id,
           admin: false,
+          date: data.data[0].createdate
         });
       }
     });
@@ -76,6 +79,7 @@ export default class Login extends React.Component {
           loggedIn: true,
           id: data.data[0].id,
           admin: true,
+          date: data.data[0].createdate
         });
       }
     });
@@ -88,10 +92,14 @@ export default class Login extends React.Component {
       empname: this.state.empname,
       emppass: this.state.emppass,
     }).then((data) => {
+      console.log(data);
       this.setState({
         loggedIn: true,
-        id: data.data.id,
+        id: data.data[0].id,
         admin: true,
+        first: true,
+        date: data.data[0].createdate,
+        calID: data.data[0].calID,
       });
     });
   }
@@ -137,7 +145,7 @@ export default class Login extends React.Component {
     return (
       <div>
         {this.state.loggedIn ?
-          <App admin={this.state.admin} id={this.state.id} /> :
+          <App admin={this.state.admin} id={this.state.id} date={this.state.date} cal={this.state.calID} /> :
           login}
       </div>
     );

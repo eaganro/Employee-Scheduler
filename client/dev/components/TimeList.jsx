@@ -5,10 +5,10 @@ export default class TimeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      start: 0,
-      end: 0,
-      bStart: 0,
-      bEnd: 0,
+      start: 8,
+      end: 8,
+      bStart: 8,
+      bEnd: 8,
     };
     this.startChange = this.startChange.bind(this);
     this.endChange = this.endChange.bind(this);
@@ -56,27 +56,27 @@ export default class TimeList extends React.Component {
       <div>
         {timesArr}
         <div>
-          Shift Start:
           <select onChange={this.startChange}>
+            <option>Shift Start</option>
             {[...Array(25)].map((x, i) => (
               <option>{8 + (i / 2)}</option>
             ))}
           </select>
-          Shift End:
           <select onChange={this.endChange}>
+            <option>Shift End</option>
             {[...Array(25)].map((x, i) => (
               <option>{8 + (i / 2)}</option>
             ))}
           </select>
 
-          Break Start:
           <select onChange={this.bStartChange}>
+            <option>Break Start</option>
             {[...Array(25)].map((x, i) => (
               <option>{8 + (i / 2)}</option>
             ))}
           </select>
-          Break End:
           <select onChange={this.bEndChange}>
+            <option>Break End</option>
             {[...Array(25)].map((x, i) => (
               <option>{8 + (i / 2)}</option>
             ))}

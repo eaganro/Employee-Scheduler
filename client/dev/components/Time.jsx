@@ -1,12 +1,18 @@
 import React from 'react';
+import styles from '../styles/styles.css';
 
 const Time = ({data, removeTime, id}) => (
-  <div style={{ border: '1px solid black' }}>
-    <span>Start: {data.tStart}</span>
-    <span>End: {data.tEnd}</span>
-    <span>Break Start: {data.bStart}</span>
-    <span>Break End: {data.bEnd}</span>
-    <button onClick={() => removeTime(id)}>Remove</button>
+  <div className={styles.manageList}>
+    <span>
+      <span style={{ fontWeight: '600' }}>Shift:<span style={{ fontWeight: '400' }}>{data.tStart}-{data.tEnd}</span></span>
+      <span style={{ fontWeight: '600' }}> Break:<span style={{ fontWeight: '400' }}>{data.bStart}-{data.bEnd}</span></span>
+    </span>
+    <button
+      className={styles.removeButton}
+      onClick={() => removeTime(id)}
+    >
+      x
+    </button>
   </div>
 );
 

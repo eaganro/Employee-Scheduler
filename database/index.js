@@ -98,11 +98,29 @@ const signUp = (data, callback) => {
     empname,
     emppass,
   } = data;
-  connection.query(`INSERT INTO users (username, password, empname, emppassword) values ('${username}', '${password}', '${empname}', '${emppass}' );`, (err, result) => {
+  let date = new Date();
+  let month = date.getUTCMonth() + 1;
+  let day = date.getUTCDate();
+  let year = date.getUTCFullYear();
+  connection.query(`INSERT INTO users (username, password, empname, emppassword, createdate) values ('${username}', '${password}', '${empname}', '${emppass}', '${year}-${month}-${day}');`, (err, ins) => {
     if (err) {
       callback(false, err);
+    } else {
+      connection.query(`SELECT * FROM users WHERE username='${username}' AND password='${password}';`, (err2, result) => {
+        if(err2) {
+          callback(false, err2);
+        } else {
+          connection.query(`INSERT INTO calendars (name, user_id) VALUES ('default', ${result[0].id});`, (calInsErr, insRes) => {
+            if(calInsErr) {
+              callback(false, calInsErr);
+            } else {
+              console.log(insRes);
+              callback(true, result, insRes.insertId);  
+            }
+          });
+        }
+      });
     }
-    callback(true, result);
   });
 };
 
@@ -132,6 +150,36 @@ const employeeLogin = (data, callback) => {
   });
 };
 
+const addCalendar = (data, callback) => {
+  const { name, userID } = data;
+  connection.query(`INSERT INTO calendars (name, user_id) VALUES ('${name}', ${userID})`, (err, result) => {
+    if (err) {
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+}
+
+const removeCalendar = (data, callback) => {
+  const { name, userID } = data;
+  connection.query(`DELETE FROM calendars WHERE name='${name}' AND user_id=${userID}`, (err, result) => {
+    if (err) {
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+}
+
+const getCalendars = (userID, callback) => {
+  connection.query(`SELECT * FROM calendars WHERE user_id=${userID}`, (err, result) => {
+    if (err) {
+      console.log(err);
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+}
+
 module.exports = {
   addEmployee,
   removeEmployee,
@@ -145,4 +193,7 @@ module.exports = {
   signUp,
   adminLogin,
   employeeLogin,
+  addCalendar,
+  removeCalendar,
+  getCalendars,
 };

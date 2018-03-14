@@ -30,6 +30,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "file-loader": "^1.1.11",
     "mysql": "^2.15.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2"

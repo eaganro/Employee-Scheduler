@@ -4,6 +4,7 @@ import axios from 'axios';
 import EmployeeList from './EmployeeList.jsx';
 import Calendar from './Calendar.jsx';
 import TimeList from './TimeList.jsx';
+import CalList from './CalList.jsx';
 import styles from '../styles/styles.css';
 
 export default class App extends React.Component {
@@ -14,9 +15,11 @@ export default class App extends React.Component {
         id: this.props.id,
         admin: this.props.admin,
       },
+      calId: this.props.cal,
       showCal: !this.props.admin,
       employees: {},
       times: {},
+      calendars: {},
       schedule: [
         [
           [],
@@ -31,6 +34,8 @@ export default class App extends React.Component {
       week: 0,
       savedDay: {},
       savedWeek: {},
+      firstSun: '',
+      showPanel: true,
     };
     this.addEmployee = this.addEmployee.bind(this);
     this.removeEmployee = this.removeEmployee.bind(this);
@@ -40,6 +45,10 @@ export default class App extends React.Component {
     this.changeEmployeeTime = this.changeEmployeeTime.bind(this);
     this.addEmployeeShift = this.addEmployeeShift.bind(this);
     this.removeShift = this.removeShift.bind(this);
+    this.addCalItem = this.addCalItem.bind(this);
+    this.removeCalItem = this.removeCalItem.bind(this);
+
+
     this.nextWeek = this.nextWeek.bind(this);
     this.copyDay = this.copyDay.bind(this);
     this.pasteDay = this.pasteDay.bind(this);
@@ -50,10 +59,71 @@ export default class App extends React.Component {
     this.getEmployees = this.getEmployees.bind(this);
     this.getTimes = this.getTimes.bind(this);
     this.getShifts = this.getShifts.bind(this);
+    this.getCalendars = this.getCalendars.bind(this);
+    this.calcDate = this.calcDate.bind(this);
 
+    this.calcDate();
     this.getEmployees();
     this.getTimes();
     this.getShifts();
+    this.getCalendars();
+  }
+
+  addCalItem(name) {
+    axios.post('/calendar/add', {
+      userID: this.state.user.id,
+      name,
+    }).then(() => {
+      this.getCalendars();
+    }).catch((err) => {
+      console.log('error', err);
+    });
+  }
+
+  removeCalItem(id) {
+    axios.post('/calendar/remove', {
+      userID: this.state.user.id,
+      name: this.state.calendars[id].name,
+    }).then(() => {
+      this.getCalendars();
+    });
+  }
+//HHHHEHEHEHEHEHREERERHEHREHREHRHERHEHREHRHEHREHRHEHREHREHREHRHEHREHREHREHREHRHERHEHREHRHERHERHEHREHREHREHRHERHEHREHREHREHRHERHEHREHREHRHERHEHREHRHERHEHREHREHRHERHERHERHHERHR
+  getCalendars() {
+    axios.post('/calendar', {
+      id: this.state.user.id,
+    }).then((response) => {
+      console.log(response.data);
+      const { data } = response;
+      const calendars = {};
+      let calId = this.state.calId;
+      data.forEach((c, i) => {
+        if (!calId) {
+          calId = c;
+        }
+        calendars[c.id] = {
+          name: c.name,
+        };
+      });
+
+      this.setState({
+        calendars,
+        calId,
+      }, () => console.log(this.state.calendars));
+    });
+  }
+
+  componentWillMount() {
+    let date = new Date(this.props.date);
+    date.setDate(date.getDate() - date.getDay());
+    console.log(this.state);
+    this.setState({
+      firstSun: date,
+    }, () => console.log(this.state));
+  }
+
+  calcDate() {
+    
   }
 
   pasteWeek() {
@@ -212,6 +282,7 @@ export default class App extends React.Component {
       name,
     }).then(() => {
       this.getEmployees();
+      this.getShifts();
     }).catch((err) => {
       console.log('error', err);
     });
@@ -313,66 +384,98 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.state.showCal ?
-          <div>
-            {this.state.user.admin ?
-              <span>
-                <button
-                  onClick={() => this.setState({ showCal: false })}
-                >
-                  Back to Employee and Time Edit
-                </button> 
-                <button onClick={this.copyWeek}>Copy Week</button>
-                <button onClick={this.pasteWeek}>Paste Week</button>
-              </span> :
-              ''}
-            <button
-              onClick={() => this.setState({ week: this.state.week - 1 })}
-              style={{
-                visibility: this.state.week === 0 ? 'hidden' : 'visible',
-              }}
-            >
-              Previous Week
-            </button>
-            <button onClick={this.nextWeek}>Next Week</button>
-            {[...Array(7)].map((c, i) => (
-              <Calendar
-                employees={this.state.employees}
-                times={this.state.times}
-                changeET={this.changeEmployeeTime}
-                addES={this.addEmployeeShift}
-                removeShift={this.removeShift}
-                schedule={this.state.schedule}
-                dayNum={i}
-                weekNum={this.state.week}
-                admin={this.state.user.admin}
-                copyDay={this.copyDay}
-                pasteDay={this.pasteDay}
-              />
-            ))}
-          </div> :
-          <div className={styles.inputPage}>
-            <EmployeeList
-              addEmployee={this.addEmployee}
-              removeEmployee={this.removeEmployee}
+      <div className={styles.inputPage}>
+        <div className={styles.calendarArea}>
+          {this.state.user.admin ?
+            <span>
+              <button
+                onClick={() => this.setState({ showCal: false })}
+              >
+                Back to Employee and Time Edit
+              </button> 
+              <button onClick={this.copyWeek}>Copy Week</button>
+              <button onClick={this.pasteWeek}>Paste Week</button>
+            </span> :
+            ''}
+          <button
+            onClick={() => this.setState({ week: this.state.week - 1 })}
+            style={{
+              visibility: this.state.week === 0 ? 'hidden' : 'visible',
+            }}
+          >
+            Previous Week
+          </button>
+          <button onClick={this.nextWeek}>Next Week</button>
+          {[...Array(7)].map((c, i) => (
+            <Calendar
               employees={this.state.employees}
-              className={styles.employeeList}
-            />
-            <TimeList
-              addTime={this.addTime}
-              removeTime={this.removeTime}
               times={this.state.times}
-              className={styles.timeList}
+              changeET={this.changeEmployeeTime}
+              addES={this.addEmployeeShift}
+              removeShift={this.removeShift}
+              schedule={this.state.schedule}
+              dayNum={i}
+              weekNum={this.state.week}
+              admin={this.state.user.admin}
+              copyDay={this.copyDay}
+              pasteDay={this.pasteDay}
+              date={this.state.firstSun}
             />
-            <button
-              onClick={this.showCal}
-              className={styles.scheduleButton}
-            >
-              Edit Schedule
-            </button>
+          ))}
+        </div>
+        <div className={this.state.showPanel ? styles.controlPanel : styles.hidePanel}>
+          <button
+            style={{ width: '100%' }}
+            onClick={() => this.setState({ showPanel: !this.state.showPanel })}
+          >
+            {this.state.showPanel ? 'Hide' : 'Show'} Control Panel
+          </button>
+          <div className={styles.empList}>
+            {this.state.showPanel ?
+            <div>
+              <p>Manage Employees</p>
+              <EmployeeList
+                addEmployee={this.addEmployee}
+                removeEmployee={this.removeEmployee}
+                employees={this.state.employees}
+                className={styles.employeeList}
+              />
+            </div> :
+            ''}
           </div>
-        }
+          <div className={styles.timeList}>
+            {this.state.showPanel ?
+            <div>
+              <p>Manage Times</p>
+              <TimeList
+                addTime={this.addTime}
+                removeTime={this.removeTime}
+                times={this.state.times}
+                className={styles.timeList}
+              /> 
+            </div>:
+            ''}
+          </div>
+          {/* <div className={styles.calList}>
+            {this.state.showPanel ?
+            <div>
+              <p>Manage Times</p>
+              <CalList
+                addTime={this.addTime}
+                removeTime={this.removeTime}
+                times={this.state.times}
+                className={styles.timeList}
+              /> 
+            </div>:
+            ''}
+          </div> */}
+        </div>
+        <button
+          onClick={this.showCal}
+          className={styles.scheduleButton}
+        >
+          Edit Schedule
+        </button>
       </div>
     );
   }

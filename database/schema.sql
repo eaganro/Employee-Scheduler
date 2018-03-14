@@ -10,10 +10,20 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL,
   empname VARCHAR(255) NOT NULL,
   emppassword VARCHAR(255) NOT NULL,
+  createdate DATE NOT NULL,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE employees (
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  name varchar(50) NOT NULL,
+  user_id INTEGER NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE KEY name (name, user_id)
+);
+
+CREATE TABLE calendars (
   id INTEGER NOT NULL AUTO_INCREMENT,
   name varchar(50) NOT NULL,
   user_id INTEGER NOT NULL,

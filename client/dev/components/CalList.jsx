@@ -1,7 +1,7 @@
 import React from 'react';
-import Employee from './Employee.jsx';
+import CalItem from './CalItem.jsx';
 
-export default class EmployeeList extends React.Component {
+export default class CalList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,27 +17,27 @@ export default class EmployeeList extends React.Component {
   }
 
   render() {
-    const { employees } = this.props;
-    const emps = [];
-    Object.keys(employees).forEach((e) => {
-      emps.push(<Employee
+    const { calItems } = this.props;
+    const cals = [];
+    Object.keys(calItems).forEach((e) => {
+      emps.push(<CalItems
         id={e}
-        data={employees[e]}
-        removeEmployee={this.props.removeEmployee}
+        data={calItems[e]}
+        removeCalItem={this.props.removeCalItem}
       />);
     });
-    console.log(emps);
+    console.log(cals);
 
     return (
       <div>
-        {emps}
+        {cals}
         <div>
-          Employee Name:
+          Calendar Name:
           <input value={this.state.name} onChange={this.nameChange} type="text" id="nameInput" />
           <button
-            onClick={() => this.props.addEmployee(this.state.name)}
+            onClick={() => this.props.addCalItem(this.state.name)}
           >
-            Add Employee
+            Add Calendar
           </button>
         </div>
       </div>

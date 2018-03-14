@@ -12,29 +12,22 @@ export default class Calender extends React.Component {
 
 
   render() {
-    const { schedule, employees, dayNum, weekNum, admin, copyDay, pasteDay } = this.props;
-    const dayName = {
-      0: 'Sunday',
-      1: 'Monday',
-      2: 'Tuesday',
-      3: 'Wednesday',
-      4: 'Thursday',
-      5: 'Friday',
-      6: 'Saturday',
-    };
+    const { schedule, employees, dayNum, weekNum, admin, copyDay, pasteDay, date } = this.props;
     const empOpts = [];
     Object.keys(employees).forEach((e) => {
       if (!schedule[weekNum][dayNum].includes(Number(e))) {
         empOpts.push(<option>{`${e}-${employees[e].name}`}</option>);
       }
     });
+    let thisDate = new Date(date.getTime());
+    thisDate.setDate(thisDate.getDate() + dayNum + weekNum*7);
 
     return (
       <div className={styles.calendar}>
-        <h3>{dayName[dayNum]}</h3>
+        <h3>{thisDate.toDateString()}</h3>
         {[...Array(25)].map((x, i) => (
           <div className={i === 0 ? styles.firstCol : styles.topRow}>
-            {i === 0 ? ' ' : 8 + ((i - 1) / 2)}
+            {i === 0 ? ' ' : (i-1)%2=== 0 ? 8+((i - 1) / 2) + ':00' : 8+((i - 1) / 2)-0.5 + ':30'}
           </div>
         ))}
         {schedule[weekNum][dayNum].map(e => (

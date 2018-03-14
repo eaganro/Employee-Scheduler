@@ -39,7 +39,12 @@ export default class CalenderRow extends React.Component {
           </div>
         ))}
         {admin ?
-          <button onClick={() => this.props.removeShift(weekNum, dayNum, this.props.id)}>remove</button> :
+          <button
+            className={styles.removeButton}
+            onClick={() => this.props.removeShift(weekNum, dayNum, this.props.id)}
+          >
+            x
+          </button> :
           ''}
       </div>
     );

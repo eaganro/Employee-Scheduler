@@ -1,14 +1,47 @@
 .inputPage {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 4fr 1fr;
 }
 
-.employeeList {
+.controlPanel {
+  grid-row: 1;
+  grid-column: 2;
+  background-color: white;
+  display: inline-block;
+  box-shadow: 1px 1px 1px 1px;
+}
 
+.hidePanel {
+  grid-row: 1;
+  grid-column: 2;
+  background-color: white;
+  display: inline-block;
+  box-shadow: 1px 1px 1px 1px;
+}
+
+.empList {
+  /* grid-row: 1;
+  grid-column: 2; */
+}
+
+.empList p {
+  font-weight: 700;
+  text-align: center;
 }
 
 .timeList {
-  
+  /* grid-row: 2;
+  grid-column: 2; */
+}
+
+.timeList p {
+  font-weight: 700;
+  text-align: center;
+}
+
+.calendarArea {
+  grid-row: 1/3;
+  grid-column: 1/3;
 }
 
 .scheduleButton {
@@ -19,11 +52,12 @@
   border: 1px solid black;
   margin-bottom: 100px;
   padding: 20px;
+  min-width: 1190px;
 }
 
 .topRow {
   display: inline-block;
-  width: 30px;
+  width: 40px;
   height: 40px;
   border: 1px solid black;
   vertical-align: top;
@@ -33,7 +67,7 @@
 .calRow {
   background-color: black;
   display: inline-block;
-  width: 30px;
+  width: 40px;
   height: 40px;
   border: 1px solid white;
   color: white;
@@ -43,7 +77,7 @@
 
 .calRowOff {
   display: inline-block;
-  width: 30px;
+  width: 40px;
   height: 40px;
   border: 1px solid black;
   vertical-align: top;
@@ -56,4 +90,22 @@
   border: 1px solid black;
   vertical-align: top;
   overflow: hidden;
+}
+
+.manageList {
+  border: 1px solid black;
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+}
+
+.removeButton {
+  grid-column: 2;
+  border: none;
+  background-color: red;
+  padding: 1px 3px;
+}
+
+.removeButton:hover {
+  background-color: darkred;
+  cursor: pointer;
 }
