@@ -110,7 +110,7 @@ app.post('/calendar', (req, res) => {
 });
 
 app.post('/shift', (req, res) => {
-  db.getShifts(req.body.id, (stat, result) => {
+  db.getShifts(req.body, (stat, result) => {
     if (stat) {
       res.status(200).send(result);
     } else {

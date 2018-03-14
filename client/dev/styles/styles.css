@@ -39,6 +39,11 @@
   text-align: center;
 }
 
+.calList p {
+  font-weight: 700;
+  text-align: center;
+}
+
 .calendarArea {
   grid-row: 1/3;
   grid-column: 1/3;

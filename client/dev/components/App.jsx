@@ -60,13 +60,6 @@ export default class App extends React.Component {
     this.getTimes = this.getTimes.bind(this);
     this.getShifts = this.getShifts.bind(this);
     this.getCalendars = this.getCalendars.bind(this);
-    this.calcDate = this.calcDate.bind(this);
-
-    this.calcDate();
-    this.getEmployees();
-    this.getTimes();
-    this.getShifts();
-    this.getCalendars();
   }
 
   addCalItem(name) {
@@ -88,42 +81,44 @@ export default class App extends React.Component {
       this.getCalendars();
     });
   }
-//HHHHEHEHEHEHEHREERERHEHREHREHRHERHEHREHRHEHREHRHEHREHREHREHRHEHREHREHREHREHRHERHEHREHRHERHERHEHREHREHREHRHERHEHREHREHREHRHERHEHREHREHRHERHEHREHRHERHEHREHREHRHERHERHERHHERHR
+
   getCalendars() {
     axios.post('/calendar', {
       id: this.state.user.id,
     }).then((response) => {
-      console.log(response.data);
+      //console.log(response.data);
       const { data } = response;
       const calendars = {};
       let calId = this.state.calId;
       data.forEach((c, i) => {
         if (!calId) {
-          calId = c;
+          calId = c.id;
         }
         calendars[c.id] = {
           name: c.name,
         };
       });
-
+      console.log(calId);
       this.setState({
         calendars,
         calId,
-      }, () => console.log(this.state.calendars));
+      }, () => {
+        this.getEmployees();
+        this.getTimes();
+        this.getShifts();
+      });
     });
   }
 
   componentWillMount() {
     let date = new Date(this.props.date);
     date.setDate(date.getDate() - date.getDay());
-    console.log(this.state);
+    //console.log(this.state);
     this.setState({
       firstSun: date,
-    }, () => console.log(this.state));
-  }
+    });
 
-  calcDate() {
-    
+    this.getCalendars();
   }
 
   pasteWeek() {
@@ -183,7 +178,7 @@ export default class App extends React.Component {
     axios.post('/employee', {
       id: this.state.user.id,
     }).then((response) => {
-      console.log(response.data);
+      //console.log(response.data);
       const { data } = response;
       const employees = {};
       data.forEach((e) => {
@@ -195,7 +190,7 @@ export default class App extends React.Component {
 
       this.setState({
         employees,
-      }, () => console.log(this.state.employees));
+      });
 
       // this.setState({
       //   employees: response.data.map(e => ({ id: e.id, name: e.name, shifts: [[]] })),
@@ -226,17 +221,19 @@ export default class App extends React.Component {
 
   getShifts() {
     axios.post('/shift', {
-      id: this.state.user.id,
+      userId: this.state.user.id,
+      calId: this.state.calId,
     }).then((response) => {
       const { data } = response;
-      const { employees, schedule, times } = this.state;
+      const { employees, times } = this.state;
+      let { schedule } = this.state;
       const max = response.data.reduce((a, c) => {
         if (c.week > a) {
           return c.week;
         }
         return a;
       }, 0);
-
+      schedule = [];
       for (let i = 0; i <= max; i += 1) {
         schedule[i] = [[], [], [], [], [], [], []];
         Object.keys(employees).forEach((e) => {
@@ -272,7 +269,7 @@ export default class App extends React.Component {
       this.setState({
         employees,
         schedule,
-      }, () => console.log(this.state));
+      });
     });
   }
 
@@ -331,6 +328,7 @@ export default class App extends React.Component {
     if (timeI !== '') {
       axios.post('/shift/add', {
         userId: this.state.user.id,
+        calId: this.state.calId,
         week,
         day,
         employeeId: empI,
@@ -342,7 +340,7 @@ export default class App extends React.Component {
   }
 
   addEmployeeShift(valS, day, week) {
-    console.log(week);
+    //console.log(week);
     const i = Number(valS.slice(0, valS.indexOf('-')));
     const { schedule } = this.state;
     schedule[week][day].push(i);
@@ -354,11 +352,12 @@ export default class App extends React.Component {
   removeShift(week, day, employeeId) {
     axios.post('/shift/remove', {
       userId: this.state.user.id,
+      calId: this.state.calId,
       week,
       day,
       employeeId,
     }).then(() => {
-      console.log('herer');
+      //console.log('herer');
       let emps = this.state.employees;
       emps[employeeId].shifts[week][day] = undefined;
       this.getShifts();
@@ -379,10 +378,11 @@ export default class App extends React.Component {
       schedule,
       week,
       employees,
-    }, () => console.log(this.state));
+    });
   }
 
   render() {
+    console.log(this.state);
     return (
       <div className={styles.inputPage}>
         <div className={styles.calendarArea}>
@@ -406,6 +406,18 @@ export default class App extends React.Component {
             Previous Week
           </button>
           <button onClick={this.nextWeek}>Next Week</button>
+          <select
+            onChange={(e) => {
+              this.setState({
+                calId: e.target.options[e.target.selectedIndex].value,
+              }, () => this.getShifts());
+            }}
+          >
+            {Object.keys(this.state.calendars).map(c => {
+              console.log(this.state.calendars[c].name);
+              return <option value={c}>{this.state.calendars[c].name}</option>
+            })}
+          </select>
           {[...Array(7)].map((c, i) => (
             <Calendar
               employees={this.state.employees}
@@ -438,7 +450,6 @@ export default class App extends React.Component {
                 addEmployee={this.addEmployee}
                 removeEmployee={this.removeEmployee}
                 employees={this.state.employees}
-                className={styles.employeeList}
               />
             </div> :
             ''}
@@ -451,24 +462,22 @@ export default class App extends React.Component {
                 addTime={this.addTime}
                 removeTime={this.removeTime}
                 times={this.state.times}
-                className={styles.timeList}
               /> 
             </div>:
             ''}
           </div>
-          {/* <div className={styles.calList}>
+          <div className={styles.calList}>
             {this.state.showPanel ?
             <div>
-              <p>Manage Times</p>
+              <p>Manage Calendars</p>
               <CalList
-                addTime={this.addTime}
-                removeTime={this.removeTime}
-                times={this.state.times}
-                className={styles.timeList}
+                addCalItem={this.addCalItem}
+                removeCalItem={this.removeCalItem}
+                calendars={this.state.calendars}
               /> 
             </div>:
             ''}
-          </div> */}
+          </div>
         </div>
         <button
           onClick={this.showCal}

@@ -51,11 +51,13 @@ CREATE TABLE shifts (
   employee_id INTEGER NOT NULL,
   time_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
+  calendar_id INTEGER NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE,
   FOREIGN KEY (time_id) REFERENCES times(id) ON DELETE CASCADE,
+  FOREIGN KEY (calendar_id) REFERENCES calendars(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  UNIQUE KEY week (week, day, employee_id, user_id)
+  UNIQUE KEY week (week, day, employee_id, user_id, calendar_id)
 );
 
 INSERT INTO users (username, password, empname, emppassword) VALUES ('rory', 'eagan', 'dude', 'word');

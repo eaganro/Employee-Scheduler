@@ -63,8 +63,8 @@ const getTimes = (userID, callback) => {
 
 //REPLACE INTO shifts (week, day, employee_id, time_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${userId})
 const addShift = (state, callback) => {
-  const { week, day, employeeId, timeId, userId } = state;
-  connection.query(`INSERT INTO shifts (week, day, employee_id, time_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${userId}) ON DUPLICATE KEY UPDATE time_id=${timeId};`, (err, result) => {
+  const { week, day, employeeId, timeId, userId, calId } = state;
+  connection.query(`INSERT INTO shifts (week, day, employee_id, time_id, calendar_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${calId}, ${userId}) ON DUPLICATE KEY UPDATE time_id=${timeId};`, (err, result) => {
     if (err) {
       callback(false, err);
     }
@@ -73,8 +73,8 @@ const addShift = (state, callback) => {
 };
 
 const removeShift = (state, callback) => {
-  const { userId, week, day, employeeId } = state;
-  connection.query(`DELETE FROM shifts WHERE employee_id=${employeeId} AND user_id=${userId} AND week=${week} AND day=${day}`, (err, result) => {
+  const { userId, week, day, employeeId, calId } = state;
+  connection.query(`DELETE FROM shifts WHERE employee_id=${employeeId} AND user_id=${userId} AND calendar_id=${calId} AND week=${week} AND day=${day}`, (err, result) => {
     if (err) {
       callback(false, err);
     }
@@ -82,8 +82,9 @@ const removeShift = (state, callback) => {
   });
 };
 
-const getShifts = (userID, callback) => {
-  connection.query(`SELECT * FROM shifts WHERE user_id=${userID}`, (err, result) => {
+const getShifts = (data, callback) => {
+  const { userId, calId } = data;
+  connection.query(`SELECT * FROM shifts WHERE user_id=${userId} AND calendar_id=${calId}`, (err, result) => {
     if (err) {
       callback(false, err);
     }

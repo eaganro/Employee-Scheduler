@@ -17,12 +17,12 @@ export default class CalList extends React.Component {
   }
 
   render() {
-    const { calItems } = this.props;
+    const { calendars } = this.props;
     const cals = [];
-    Object.keys(calItems).forEach((e) => {
-      emps.push(<CalItems
-        id={e}
-        data={calItems[e]}
+    Object.keys(calendars).forEach((c) => {
+      cals.push(<CalItem
+        id={c}
+        data={calendars[c]}
         removeCalItem={this.props.removeCalItem}
       />);
     });
