@@ -410,7 +410,10 @@ export default class App extends React.Component {
             onChange={(e) => {
               this.setState({
                 calId: e.target.options[e.target.selectedIndex].value,
-              }, () => this.getShifts());
+              }, () => {
+                this.getEmployees();
+                this.getShifts();
+              });
             }}
           >
             {Object.keys(this.state.calendars).map(c => {

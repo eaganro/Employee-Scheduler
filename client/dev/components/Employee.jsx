@@ -8,7 +8,7 @@ const Employee = ({data, removeEmployee, id}) => (
       className={styles.removeButton}
       onClick={() => removeEmployee(id)}
     >
-      x
+      X
     </button>
   </div>
 );

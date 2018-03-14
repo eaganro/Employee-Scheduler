@@ -8,7 +8,7 @@ const CalItem = ({data, removeCalItem, id}) => (
       className={styles.removeButton}
       onClick={() => removeCalItem(id)}
     >
-      x
+      X
     </button>
   </div>
 );

@@ -11,7 +11,7 @@ const Time = ({data, removeTime, id}) => (
       className={styles.removeButton}
       onClick={() => removeTime(id)}
     >
-      x
+      X
     </button>
   </div>
 );
