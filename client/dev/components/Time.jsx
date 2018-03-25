@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/styles.css';
 
-const Time = ({data, removeTime, id}) => (
+const Time = ({ data, removeTime, id }) => (
   <div className={styles.manageList}>
     <span>
       <span style={{ fontWeight: '600' }}>Shift:<span style={{ fontWeight: '400' }}>{data.tStart}-{data.tEnd}</span></span>

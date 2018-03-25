@@ -26,7 +26,6 @@ export default class EmployeeList extends React.Component {
         removeEmployee={this.props.removeEmployee}
       />);
     });
-    console.log(emps);
 
     return (
       <div>
