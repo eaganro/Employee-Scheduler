@@ -174,7 +174,7 @@ export default class App extends React.Component {
           schedule[data[i].week][data[i].day].push(data[i].employee_id);
         }
       }
-
+      console.log(employees);
       Object.keys(employees).forEach((e) => {
         employees[e].shifts.forEach((s, i) => {
           const sWeek = s.slice();
@@ -302,10 +302,11 @@ export default class App extends React.Component {
   removeTime(id) {
     axios.post('/time/remove', {
       id: this.state.user.id,
-      time_id: id,
+      timeId: id,
     }).then(() => {
-      this.getTimes();
+      this.getEmployees();
       this.getShifts();
+      this.getTimes();
     });
   }
 

@@ -5,7 +5,7 @@ import CalenderRow from './CalendarRow';
 import styles from '../styles/styles.css';
 
 const Calendar = ({
-  schedule, employees, dayNum, weekNum, admin, copyDay, pasteDay, date, times, changeET, removeShift,
+  schedule, employees, dayNum, weekNum, admin, copyDay, pasteDay, date, times, changeET, removeShift, addES,
 }) => {
   Calendar.propTypes = {
     schedule: PropTypes.array.isRequired,
@@ -19,6 +19,7 @@ const Calendar = ({
     times: PropTypes.object.isRequired,
     changeET: PropTypes.func.isRequired,
     removeShift: PropTypes.func.isRequired,
+    addES: PropTypes.func.isRequired,
   };
 
   const empOpts = [];
@@ -29,16 +30,30 @@ const Calendar = ({
   });
   let thisDate = new Date(date.getTime());
   thisDate.setDate(thisDate.getDate() + dayNum + (weekNum*7));
+
+  const topRow = [...Array(25)].map((x, i) => {
+    let text = '';
+    if ((i - 1) % 2 === 0) {
+      text = `${8 + ((i - 1) / 2)}:00`;
+    } else {
+      text = `${7.5 + ((i - 1) / 2)}:30`;
+    }
+    if (i === 0) {
+      text = '';
+    }
+    return (
+      <div className={i === 0 ? styles.firstCol : styles.topRow}>
+        <span>
+          {text}
+        </span>
+      </div>
+    );
+  });
+
   return (
     <div className={styles.calendar}>
       <h3>{thisDate.toDateString()}</h3>
-      {[...Array(25)].map((x, i) => (
-        <div className={i === 0 ? styles.firstCol : styles.topRow}>
-          <span>
-            {i === 0 ? ' ' : (i-1)%2=== 0 ? 8+((i - 1) / 2) + ':00' : 8+((i - 1) / 2)-0.5 + ':30'}
-          </span>
-        </div>
-      ))}
+      {topRow}
       {schedule[weekNum][dayNum].map(e => (
         <CalenderRow
           id={e}

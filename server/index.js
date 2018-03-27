@@ -1,23 +1,15 @@
 const express = require('express');
 const parser = require('body-parser');
+const session = require('express-session');
+const path = require('path');
+
 const db = require('../database/');
-var session = require('express-session');
 
 const app = express();
 
-
-app.use(session({
-  secret: 'schedule',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}))
 app.use(parser.json());
-app.use((req, res, next) => {
-  if(req.session)
-  next();
-});
-app.use(express.static(__dirname + '/../client/dist'));
+
+app.use(express.static(path.join(__dirname, '/../client/dist')));
 
 app.post('/employee/add', (req, res) => {
   db.addEmployee(req.body.name, req.body.id, (stat, result) => {
@@ -150,9 +142,10 @@ app.post('/signup', (req, res) => {
       console.log(result);
       res.status(200).send(result);
     } else {
+      let newRes = result;
       console.log(result);
-      result[0].calID = calID;
-      res.status(400).send(result);
+      newRes[0].calID = calID;
+      res.status(400).send(newRes);
     }
   });
 });

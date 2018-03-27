@@ -1,9 +1,16 @@
 import React from 'react';
-import CalItem from './CalItem.jsx';
+import PropTypes from 'prop-types';
+
+import CalItem from './CalItem';
 
 export default class CalList extends React.Component {
   constructor(props) {
     super(props);
+    CalList.propTypes = {
+      calendars: PropTypes.object.isRequired,
+      removeCalItem: PropTypes.func.isRequired,
+      addCalItem: PropTypes.func.isRequired,
+    };
     this.state = {
       name: '',
     };

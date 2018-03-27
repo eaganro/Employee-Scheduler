@@ -32,8 +32,11 @@ const getEmployees = (userID, callback) => {
 };
 
 const addTime = (state, callback) => {
-  const { start, end, bStart, bEnd, id } = state;
-  connection.query(`INSERT INTO times (tStart, tEnd, bStart, bEnd, user_id) VALUES (${start}, ${end}, ${bStart}, ${bEnd}, ${id})`, (err, result) => {
+  const {
+    start, end, bStart, bEnd, id,
+  } = state;
+  connection.query(`INSERT INTO times (tStart, tEnd, bStart, bEnd, user_id)
+    VALUES (${start}, ${end}, ${bStart}, ${bEnd}, ${id})`, (err, result) => {
     if (err) {
       callback(false, err);
     }
@@ -42,8 +45,8 @@ const addTime = (state, callback) => {
 };
 
 const removeTime = (state, callback) => {
-  const { id, time_id } = state;
-  connection.query(`DELETE FROM times WHERE id=${time_id} AND user_id=${id}`, (err, result) => {
+  const { id, timeId } = state;
+  connection.query(`DELETE FROM times WHERE id=${timeId} AND user_id=${id}`, (err, result) => {
     if (err) {
       callback(false, err);
     }
@@ -61,10 +64,13 @@ const getTimes = (userID, callback) => {
   });
 };
 
-//REPLACE INTO shifts (week, day, employee_id, time_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${userId})
 const addShift = (state, callback) => {
-  const { week, day, employeeId, timeId, userId, calId } = state;
-  connection.query(`INSERT INTO shifts (week, day, employee_id, time_id, calendar_id, user_id) VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${calId}, ${userId}) ON DUPLICATE KEY UPDATE time_id=${timeId};`, (err, result) => {
+  const {
+    week, day, employeeId, timeId, userId, calId,
+  } = state;
+  connection.query(`INSERT INTO shifts (week, day, employee_id, time_id, calendar_id, user_id)
+    VALUES (${week}, ${day}, ${employeeId}, ${timeId}, ${calId}, ${userId})
+    ON DUPLICATE KEY UPDATE time_id=${timeId};`, (err, result) => {
     if (err) {
       callback(false, err);
     }
@@ -73,8 +79,12 @@ const addShift = (state, callback) => {
 };
 
 const removeShift = (state, callback) => {
-  const { userId, week, day, employeeId, calId } = state;
-  connection.query(`DELETE FROM shifts WHERE employee_id=${employeeId} AND user_id=${userId} AND calendar_id=${calId} AND week=${week} AND day=${day}`, (err, result) => {
+  const {
+    userId, week, day, employeeId, calId,
+  } = state;
+  connection.query(`DELETE FROM shifts
+  WHERE employee_id=${employeeId} AND user_id=${userId} AND calendar_id=${calId}
+  AND week=${week} AND day=${day}`, (err, result) => {
     if (err) {
       callback(false, err);
     }
@@ -103,20 +113,23 @@ const signUp = (data, callback) => {
   let month = date.getUTCMonth() + 1;
   let day = date.getUTCDate();
   let year = date.getUTCFullYear();
-  connection.query(`INSERT INTO users (username, password, empname, emppassword, createdate) values ('${username}', '${password}', '${empname}', '${emppass}', '${year}-${month}-${day}');`, (err, ins) => {
+  connection.query(`INSERT INTO users (username, password, empname, emppassword, createdate)
+  VALUES ('${username}', '${password}', '${empname}', '${emppass}', '${year}-${month}-${day}');`, (err, ins) => {
     if (err) {
       callback(false, err);
     } else {
-      connection.query(`SELECT * FROM users WHERE username='${username}' AND password='${password}';`, (err2, result) => {
-        if(err2) {
+      connection.query(`SELECT * FROM users
+      WHERE username='${username}' AND password='${password}';`, (err2, result) => {
+        if (err2) {
           callback(false, err2);
         } else {
-          connection.query(`INSERT INTO calendars (name, user_id) VALUES ('default', ${result[0].id});`, (calInsErr, insRes) => {
-            if(calInsErr) {
+          connection.query(`INSERT INTO calendars (name, user_id)
+          VALUES ('default', ${result[0].id});`, (calInsErr, insRes) => {
+            if (calInsErr) {
               callback(false, calInsErr);
             } else {
               console.log(insRes);
-              callback(true, result, insRes.insertId);  
+              callback(true, result, insRes.insertId);
             }
           });
         }
@@ -159,7 +172,7 @@ const addCalendar = (data, callback) => {
     }
     callback(true, result);
   });
-}
+};
 
 const removeCalendar = (data, callback) => {
   const { name, userID } = data;
@@ -169,7 +182,7 @@ const removeCalendar = (data, callback) => {
     }
     callback(true, result);
   });
-}
+};
 
 const getCalendars = (userID, callback) => {
   connection.query(`SELECT * FROM calendars WHERE user_id=${userID}`, (err, result) => {
@@ -179,7 +192,7 @@ const getCalendars = (userID, callback) => {
     }
     callback(true, result);
   });
-}
+};
 
 module.exports = {
   addEmployee,

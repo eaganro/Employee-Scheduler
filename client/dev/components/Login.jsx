@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import App from './App.jsx';
+import App from './App';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -62,7 +62,7 @@ export default class Login extends React.Component {
           loggedIn: true,
           id: data.data[0].id,
           admin: false,
-          date: data.data[0].createdate
+          date: data.data[0].createdate,
         });
       }
     });
@@ -79,7 +79,7 @@ export default class Login extends React.Component {
           loggedIn: true,
           id: data.data[0].id,
           admin: true,
-          date: data.data[0].createdate
+          date: data.data[0].createdate,
         });
       }
     });
@@ -97,7 +97,6 @@ export default class Login extends React.Component {
         loggedIn: true,
         id: data.data[0].id,
         admin: true,
-        first: true,
         date: data.data[0].createdate,
         calID: data.data[0].calID,
       });
@@ -113,8 +112,17 @@ export default class Login extends React.Component {
           Username: <input value={this.state.username} onChange={this.nameChange} type="text" /> <br />
           Password: <input value={this.state.password} onChange={this.passChange} type="password" /> <br />
           <button onClick={this.employeeLogin}>Login</button> <br />
-          <button onClick={() => this.setState({ empLogin: false, username: '', password: '' })}>To Admin Login</button> <br />
-          <button onClick={() => this.setState({ signup: true, username: '', password: '' })}>To Admin Signup</button>
+          <button
+            onClick={() => this.setState({ empLogin: false, username: '', password: '' })}
+          >
+            To Admin Login
+          </button>
+          <br />
+          <button
+            onClick={() => this.setState({ signup: true, username: '', password: '' })}
+          >
+            To Admin Signup
+          </button>
         </div>
       );
     } else if (this.state.signup === false) {
@@ -124,7 +132,12 @@ export default class Login extends React.Component {
           Username: <input value={this.state.username} onChange={this.nameChange} type="text" /> <br />
           Password: <input value={this.state.password} onChange={this.passChange} type="password" /> <br />
           <button onClick={this.adminLogin}>Login</button> <br />
-          <button onClick={() => this.setState({ empLogin: true, username: '', password: '' })}>To Viewer Login</button> <br />
+          <button
+            onClick={() => this.setState({ empLogin: true, username: '', password: '' })}
+          >
+            To Viewer Login
+          </button>
+          <br />
           <button onClick={() => this.setState({ signup: true, username: '', password: '' })}>To Admin Signup</button>
         </div>
       );
@@ -137,7 +150,13 @@ export default class Login extends React.Component {
           Employee Username: <input value={this.state.empname} onChange={this.empNameChange} type="text" /> <br />
           Employee Password: <input value={this.state.emppass} onChange={this.empPassChange} type="password" /> <br />
           <button onClick={this.signUp}>Sign Up</button> <br />
-          <button onClick={() => this.setState({ signup: false, empLogin: true, username: '', password: '' })}>To Login</button>
+          <button
+            onClick={() => this.setState({
+              signup: false, empLogin: true, username: '', password: '',
+            })}
+          >
+            To Login
+          </button>
         </div>
       );
     }

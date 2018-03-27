@@ -1,9 +1,16 @@
 import React from 'react';
-import Time from './Time.jsx'
+import PropTypes from 'prop-types';
+
+import Time from './Time';
 
 export default class TimeList extends React.Component {
   constructor(props) {
     super(props);
+    TimeList.propTypes = {
+      times: PropTypes.object.isRequired,
+      removeTime: PropTypes.func.isRequired,
+      addTime: PropTypes.func.isRequired,
+    };
     this.state = {
       start: 8,
       end: 8,
@@ -42,13 +49,13 @@ export default class TimeList extends React.Component {
 
 
   render() {
-    const { times } = this.props;
+    const { times, removeTime, addTime } = this.props;
     const timesArr = [];
     Object.keys(times).forEach((t) => {
       timesArr.push(<Time
         id={t}
         data={times[t]}
-        removeTime={this.props.removeTime}
+        removeTime={removeTime}
       />);
     });
 
@@ -82,7 +89,7 @@ export default class TimeList extends React.Component {
             ))}
           </select>
           <button
-            onClick={() => this.props.addTime(this.state)}
+            onClick={() => addTime(this.state)}
           >
             Add Time
           </button>
@@ -91,3 +98,4 @@ export default class TimeList extends React.Component {
     );
   }
 }
+

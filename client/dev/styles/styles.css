@@ -23,19 +23,9 @@ button {
   box-shadow: 1px 1px 1px 1px;
 }
 
-.empList {
-  /* grid-row: 1;
-  grid-column: 2; */
-}
-
 .empList p {
   font-weight: 700;
   text-align: center;
-}
-
-.timeList {
-  /* grid-row: 2;
-  grid-column: 2; */
 }
 
 .timeList p {
