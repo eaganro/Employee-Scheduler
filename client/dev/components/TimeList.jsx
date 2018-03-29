@@ -16,11 +16,15 @@ export default class TimeList extends React.Component {
       end: 8,
       bStart: 8,
       bEnd: 8,
+      bStart2: 8,
+      bEnd2: 8,
     };
     this.startChange = this.startChange.bind(this);
     this.endChange = this.endChange.bind(this);
     this.bStartChange = this.bStartChange.bind(this);
     this.bEndChange = this.bEndChange.bind(this);
+    this.bStart2Change = this.bStart2Change.bind(this);
+    this.bEnd2Change = this.bEnd2Change.bind(this);
   }
 
   startChange(e) {
@@ -42,6 +46,18 @@ export default class TimeList extends React.Component {
   }
 
   bEndChange(e) {
+    this.setState({
+      bEnd: e.target.value,
+    });
+  }
+
+  bStart2Change(e) {
+    this.setState({
+      bStart: e.target.value,
+    });
+  }
+
+  bEnd2Change(e) {
     this.setState({
       bEnd: e.target.value,
     });
@@ -84,6 +100,19 @@ export default class TimeList extends React.Component {
           </select>
           <select onChange={this.bEndChange}>
             <option>Break End</option>
+            {[...Array(25)].map((x, i) => (
+              <option>{8 + (i / 2)}</option>
+            ))}
+          </select>
+
+          <select onChange={this.bStart2Change}>
+            <option>Break 2 Start</option>
+            {[...Array(25)].map((x, i) => (
+              <option>{8 + (i / 2)}</option>
+            ))}
+          </select>
+          <select onChange={this.bEnd2Change}>
+            <option>Break 2 End</option>
             {[...Array(25)].map((x, i) => (
               <option>{8 + (i / 2)}</option>
             ))}

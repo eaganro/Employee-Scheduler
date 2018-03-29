@@ -286,7 +286,7 @@ export default class App extends React.Component {
 
   addTime(state) {
     const {
-      start, end, bStart, bEnd,
+      start, end, bStart, bEnd, bStart2, bEnd2,
     } = state;
     axios.post('/time/add', {
       id: this.state.user.id,
@@ -294,6 +294,8 @@ export default class App extends React.Component {
       end,
       bStart,
       bEnd,
+      bStart2,
+      bEnd2,
     }).then(() => {
       this.getTimes();
     });

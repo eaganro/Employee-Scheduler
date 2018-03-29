@@ -38,6 +38,8 @@ CREATE TABLE times (
   tEnd decimal(3, 1) NOT NULL,
   bStart decimal(3, 1) NOT NULL,
   bEnd decimal(3, 1) NOT NULL,
+  bStart2 decimal(3, 1) NOT NULL,
+  bEnd2 decimal(3, 1) NOT NULL,
   user_id INTEGER NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
