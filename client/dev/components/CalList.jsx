@@ -26,9 +26,9 @@ export default class CalList extends React.Component {
   render() {
     const { calendars } = this.props;
     const cals = [];
-    Object.keys(calendars).forEach((c) => {
+    Object.keys(calendars).sort((a, b) => calendars[a].name > calendars[b].name).forEach((c) => {
       cals.push(<CalItem
-        id={c}
+        id={Number(c)}
         data={calendars[c]}
         removeCalItem={this.props.removeCalItem}
       />);

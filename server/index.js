@@ -92,7 +92,7 @@ app.post('/calendar/remove', (req, res) => {
 });
 
 app.post('/calendar', (req, res) => {
-  db.getCalendars(req.body.id, (stat, result) => {
+  db.getCalendars(req.body.userId, (stat, result) => {
     if (stat) {
       res.status(200).send(result);
     } else {
@@ -170,6 +170,35 @@ app.post('/login/employee', (req, res) => {
     } else {
       console.log(result);
       res.status(400).send(result);
+    }
+  });
+});
+
+app.post('/data', (req, res) => {
+  const { userId } = req.body;
+  console.log(req.body);
+  db.getEmployees(userId, (statEmp, resultEmp) => {
+    if (statEmp) {
+      console.log(resultEmp);
+      db.getTimes(userId, (statTime, resultTime) => {
+        if (statTime) {
+          console.log(resultTime);
+          db.getShifts(req.body, (statShift, resultShift) => {
+            if (statShift) {
+              console.log(resultShift);
+              res.status(200).send({
+                resultEmp, resultTime, resultShift,
+              });
+            } else {
+              res.status(400).send(resultShift);
+            }
+          });
+        } else {
+          res.status(400).send(resultTime);
+        }
+      });
+    } else {
+      res.status(400).send(resultEmp);
     }
   });
 });

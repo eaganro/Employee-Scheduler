@@ -9,9 +9,20 @@ const Time = ({ data, removeTime, id }) => (
       <span style={{ fontWeight: '600' }}>
         Shift:<span style={{ fontWeight: '400' }}>{data.tStart}-{data.tEnd}</span>
       </span>
-      <span style={{ fontWeight: '600' }}>
-        Break:<span style={{ fontWeight: '400' }}>{data.bStart}-{data.bEnd}</span>
-      </span>
+      <br />
+      {data.bEnd === 8 && data.bStart === 8 ?
+        '' :
+        <span style={{ fontWeight: '600' }}>
+          Break 1:<span style={{ fontWeight: '400' }}>{data.bStart}-{data.bEnd} </span>
+        </span>
+      }
+      <br />
+      {data.bEnd2 === 8 && data.bStart2 === 8 ?
+        '' :
+        <span style={{ fontWeight: '600' }}>
+           Break 2:<span style={{ fontWeight: '400' }}>{data.bStart2}-{data.bEnd2}</span>
+        </span>
+      }
     </span>
     <button
       className={styles.removeButton}

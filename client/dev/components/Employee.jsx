@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 
 import styles from '../styles/styles.css';
 
-const Employee = ({ data, removeEmployee, id }) => (
+const Employee = ({
+  data, removeEmployee, id, toEmployeeCalendar,
+}) => (
   <div className={styles.manageList}>
-    <span style={{ fontWeight: '600' }}>Name: <span style={{ fontWeight: '400' }}>{data.name}</span></span>
+    <span style={{ fontWeight: '600' }}>Name: <button onClick={() => toEmployeeCalendar(id)} style={{ fontWeight: '400' }}>{data.name}</button></span>
     <button
       className={styles.removeButton}
       onClick={() => removeEmployee(id)}
@@ -19,6 +21,7 @@ Employee.propTypes = {
   data: PropTypes.object.isRequired,
   removeEmployee: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
+  toEmployeeCalendar: PropTypes.func.isRequired,
 };
 
 export default Employee;

@@ -11,6 +11,7 @@ export default class EmployeeList extends React.Component {
       employees: PropTypes.object.isRequired,
       removeEmployee: PropTypes.func.isRequired,
       addEmployee: PropTypes.func.isRequired,
+      toEmployeeCalendar: PropTypes.func.isRequired,
     };
 
     this.state = {
@@ -26,13 +27,16 @@ export default class EmployeeList extends React.Component {
   }
 
   render() {
-    const { employees, removeEmployee, addEmployee } = this.props;
+    const {
+      employees, removeEmployee, addEmployee, toEmployeeCalendar,
+    } = this.props;
     const emps = [];
-    Object.keys(employees).forEach((e) => {
+    Object.keys(employees).sort((a, b) => employees[a].name > employees[b].name).forEach((e) => {
       emps.push(<Employee
-        id={e}
+        id={Number(e)}
         data={employees[e]}
         removeEmployee={removeEmployee}
+        toEmployeeCalendar={toEmployeeCalendar}
       />);
     });
 

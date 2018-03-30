@@ -53,13 +53,13 @@ export default class TimeList extends React.Component {
 
   bStart2Change(e) {
     this.setState({
-      bStart: e.target.value,
+      bStart2: e.target.value,
     });
   }
 
   bEnd2Change(e) {
     this.setState({
-      bEnd: e.target.value,
+      bEnd2: e.target.value,
     });
   }
 
@@ -67,9 +67,36 @@ export default class TimeList extends React.Component {
   render() {
     const { times, removeTime, addTime } = this.props;
     const timesArr = [];
-    Object.keys(times).forEach((t) => {
+    Object.keys(times).sort((a, b) => {
+      if (times[a].tStart < times[b].tStart) {
+        return -1;
+      } else if (times[a].tStart > times[b].tStart) {
+        return 1;
+      } else if (times[a].tEnd < times[b].tEnd) {
+        return -1;
+      } else if (times[a].tEnd > times[b].tEnd) {
+        return 1;
+      } else if (times[a].bStart < times[b].bStart) {
+        return -1;
+      } else if (times[a].bStart > times[b].bStart) {
+        return 1;
+      } else if (times[a].bEnd < times[b].bEnd) {
+        return -1;
+      } else if (times[a].bEnd > times[b].bEnd) {
+        return 1;
+      } else if (times[a].bStart2 < times[b].bStart2) {
+        return -1;
+      } else if (times[a].bStart2 > times[b].bStart2) {
+        return 1;
+      } else if (times[a].bEnd2 < times[b].bEnd2) {
+        return -1;
+      } else if (times[a].bEnd2 > times[b].bEnd2) {
+        return 1;
+      }
+      return 0;
+    }).forEach((t) => {
       timesArr.push(<Time
-        id={t}
+        id={Number(t)}
         data={times[t]}
         removeTime={removeTime}
       />);

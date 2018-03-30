@@ -23,7 +23,7 @@ const Calendar = ({
   };
 
   const empOpts = [];
-  Object.keys(employees).forEach((e) => {
+  Object.keys(employees).sort((a, b) => employees[a].name > employees[b].name).forEach((e) => {
     if (!schedule[weekNum][dayNum].includes(Number(e))) {
       empOpts.push(<option>{`${e}-${employees[e].name}`}</option>);
     }
@@ -56,6 +56,7 @@ const Calendar = ({
       {topRow}
       {schedule[weekNum][dayNum].map(e => (
         <CalenderRow
+          key={e}
           id={e}
           data={employees[e]}
           times={times}
