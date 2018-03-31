@@ -58,7 +58,6 @@ export default class EmployeeList extends React.Component {
             content="Add"
           />}
         />
-        
       </Container>
     );
   }

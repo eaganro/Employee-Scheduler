@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Icon, Container, Input, Segment } from 'semantic-ui-react';
 
 import CalItem from './CalItem';
 
@@ -25,31 +26,36 @@ export default class CalList extends React.Component {
   }
 
   render() {
-    const { calendars } = this.props;
+    const { calendars, removeCalItem, addCalItem, toCalendar } = this.props;
     const cals = [];
     Object.keys(calendars).sort((a, b) => calendars[a].name > calendars[b].name).forEach((c) => {
       cals.push(<CalItem
         id={Number(c)}
         data={calendars[c]}
-        removeCalItem={this.props.removeCalItem}
-        toCalendar={this.props.toCalendar}
+        removeCalItem={removeCalItem}
+        toCalendar={toCalendar}
       />);
     });
     console.log(cals);
 
     return (
-      <div>
+      <Container>
         {cals}
-        <div>
-          Calendar Name:
-          <input value={this.state.name} onChange={this.nameChange} type="text" id="nameInput" />
-          <button
-            onClick={() => this.props.addCalItem(this.state.name)}
-          >
-            Add Calendar
-          </button>
-        </div>
-      </div>
+        <Input
+          fluid
+          value={this.state.name}
+          onChange={this.nameChange}
+          icon="calendar plus"
+          iconPosition="left"
+          placeholder="Calendar Name..."
+          action={<Button
+            style={{ width: '20%' }}
+            color="green"
+            onClick={() => addCalItem(this.state.name)}
+            content="Add"
+          />}
+        />
+      </Container>
     );
   }
 }

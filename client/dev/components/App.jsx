@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Container, Segment, Header, Sidebar, Button, Menu, Icon, Dropdown } from 'semantic-ui-react';
+import { Container, Segment, Header, Sidebar, Button, Accordion, Menu, Icon, Dropdown, Sticky } from 'semantic-ui-react';
 
 
 import EmployeeList from './EmployeeList';
@@ -47,6 +47,7 @@ export default class App extends React.Component {
       firstSun: '',
       showPanel: true,
       employeePage: null,
+      accordionIndexs: [],
     };
     this.addEmployee = this.addEmployee.bind(this);
     this.removeEmployee = this.removeEmployee.bind(this);
@@ -59,6 +60,7 @@ export default class App extends React.Component {
     this.removeCalItem = this.removeCalItem.bind(this);
     this.toEmployeeCalendar = this.toEmployeeCalendar.bind(this);
     this.toCalendar = this.toCalendar.bind(this);
+    this.accordionClick = this.accordionClick.bind(this);
 
 
     this.nextWeek = this.nextWeek.bind(this);
@@ -377,6 +379,18 @@ export default class App extends React.Component {
     }, () => this.getCalendars());
   }
 
+  accordionClick(e, title) {
+    console.log(title);
+    const { index } = title;
+    const { accordionIndexs } = this.state;
+    if (accordionIndexs.includes(index)) {
+      accordionIndexs.splice(accordionIndexs.indexOf(index), 1);
+    } else {
+      accordionIndexs.push(index);
+    }
+    this.setState({ accordionIndexs });
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -401,87 +415,111 @@ export default class App extends React.Component {
             {this.state.showPanel ? 'Hide' : 'Show'} Control Panel
           </Button>
         </Header>
-        <Sidebar.Pushable as={Segment}>
+        <Sidebar.Pushable as={Segment} style={{ height: '91vh' }}>
           <Sidebar
-            as={Menu}
             animation="overlay"
             width="wide"
             direction="right"
             visible={this.state.showPanel}
             vertical
+            style={{ boxShadow: '0 0 0' }}
           >
-            <Menu.Item name="employees">
-              <Header><Icon name="users" />Manage Employees</Header>
-              <EmployeeList
-                addEmployee={this.addEmployee}
-                removeEmployee={this.removeEmployee}
-                employees={this.state.employees}
-                toEmployeeCalendar={this.toEmployeeCalendar}
-              />
-            </Menu.Item>
-            <Menu.Item name="times">
-              <Header><Icon name="time" />Manage Times</Header>
-              <TimeList
-                addTime={this.addTime}
-                removeTime={this.removeTime}
-                times={this.state.times}
-              />
-            </Menu.Item>
-            <Menu.Item name="caldendars">
-              <Header><Icon name="calendar" />Manage Calendars</Header>
-              <CalList
-                addCalItem={this.addCalItem}
-                removeCalItem={this.removeCalItem}
-                calendars={this.state.calendars}
-                toCalendar={this.toCalendar}
-              />
-            </Menu.Item>
+            <Accordion as={Menu} vertical fluid exclusive={false}>
+              <Menu.Item name="caldendars">
+                <Accordion.Title
+                  active={this.state.accordionIndexs.includes(0)}
+                  index={0}
+                  content={<Header><Icon name="calendar" />Manage Calendars</Header>}
+                  onClick={this.accordionClick}
+                />
+                <Accordion.Content
+                  active={this.state.accordionIndexs.includes(0)}
+                  content={<CalList
+                    addCalItem={this.addCalItem}
+                    removeCalItem={this.removeCalItem}
+                    calendars={this.state.calendars}
+                    toCalendar={this.toCalendar}
+                  />}
+                />
+              </Menu.Item>
+              <Menu.Item name="employees">
+                <Accordion.Title
+                  active={this.state.accordionIndexs.includes(1)}
+                  index={1}
+                  content={<Header><Icon name="users" />Manage Employees</Header>}
+                  onClick={this.accordionClick}
+                />
+                <Accordion.Content
+                  active={this.state.accordionIndexs.includes(1)}
+                  content={<EmployeeList
+                    addEmployee={this.addEmployee}
+                    removeEmployee={this.removeEmployee}
+                    employees={this.state.employees}
+                    toEmployeeCalendar={this.toEmployeeCalendar}
+                  />}
+                />
+              </Menu.Item>
+              <Menu.Item name="times">
+                <Accordion.Title
+                  active={this.state.accordionIndexs.includes(2)}
+                  index={2}
+                  content={<Header><Icon name="time" />Manage Times</Header>}
+                  onClick={this.accordionClick}
+                />
+                <Accordion.Content
+                  active={this.state.accordionIndexs.includes(2)}
+                  content={<TimeList
+                    addTime={this.addTime}
+                    removeTime={this.removeTime}
+                    times={this.state.times}
+                  />}
+                />
+              </Menu.Item>
+            </Accordion>
           </Sidebar>
           <Sidebar.Pusher>
-            <Segment attached>
-              {this.state.user.admin ?
-                <span>
-                  <button onClick={this.copyWeek}>Copy Week</button>
-                  <button onClick={this.pasteWeek}>Paste Week</button>
-                </span> :
-              ''}
-              <button
-                onClick={() => this.setState({ week: this.state.week - 1 })}
-                style={{
-                  visibility: this.state.week === 0 ? 'hidden' : 'visible',
-                }}
-              >
-                Previous Week
-              </button>
-              <button onClick={this.nextWeek}>Next Week</button>
-              {this.state.employeePage ?
-                <EmployeeCalendar
-                  employeeId={this.state.employeePage}
-                  employeeData={this.state.employees[this.state.employeePage]}
+            {this.state.user.admin ?
+              <span>
+                <button onClick={this.copyWeek}>Copy Week</button>
+                <button onClick={this.pasteWeek}>Paste Week</button>
+              </span> :
+            ''}
+            <button
+              onClick={() => this.setState({ week: this.state.week - 1 })}
+              style={{
+                visibility: this.state.week === 0 ? 'hidden' : 'visible',
+              }}
+            >
+              Previous Week
+            </button>
+            <button onClick={this.nextWeek}>Next Week</button>
+            {this.state.employeePage ?
+              <EmployeeCalendar
+                employeeId={this.state.employeePage}
+                employeeData={this.state.employees[this.state.employeePage]}
+                times={this.state.times}
+                changeET={this.changeEmployeeTime}
+                removeShift={this.removeShift}
+                weekNum={this.state.week}
+                admin={this.state.user.admin}
+              /> :
+              [...Array(7)].map((c, i) => (
+                <Calendar
+                  employees={this.state.employees}
                   times={this.state.times}
                   changeET={this.changeEmployeeTime}
+                  addES={this.addEmployeeShift}
                   removeShift={this.removeShift}
+                  schedule={this.state.schedule}
+                  dayNum={i}
                   weekNum={this.state.week}
                   admin={this.state.user.admin}
-                /> :
-                [...Array(7)].map((c, i) => (
-                  <Calendar
-                    employees={this.state.employees}
-                    times={this.state.times}
-                    changeET={this.changeEmployeeTime}
-                    addES={this.addEmployeeShift}
-                    removeShift={this.removeShift}
-                    schedule={this.state.schedule}
-                    dayNum={i}
-                    weekNum={this.state.week}
-                    admin={this.state.user.admin}
-                    copyDay={this.copyDay}
-                    pasteDay={this.pasteDay}
-                    date={this.state.firstSun}
-                  />
-                ))
-              }
-            </Segment>
+                  copyDay={this.copyDay}
+                  pasteDay={this.pasteDay}
+                  date={this.state.firstSun}
+                />
+              ))
+            }
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       </Container>
