@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { Input } from 'semantic-ui-react';
 
-import App from './App';
+import App from './App'
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -129,8 +130,20 @@ export default class Login extends React.Component {
       login = (
         <div>
           Admin Login: <br />
-          Username: <input value={this.state.username} onChange={this.nameChange} type="text" /> <br />
-          Password: <input value={this.state.password} onChange={this.passChange} type="password" /> <br />
+          <Input
+            value={this.state.username}
+            onChange={this.nameChange}
+            icon="user"
+            iconPosition="left"
+            placeholder="Admin Username..."
+          />
+          <Input
+            value={this.state.password}
+            onChange={this.passChange}
+            icon="protect"
+            iconPosition="left"
+            placeholder="Admin Password..."
+          />
           <button onClick={this.adminLogin}>Login</button> <br />
           <button
             onClick={() => this.setState({ empLogin: true, username: '', password: '' })}

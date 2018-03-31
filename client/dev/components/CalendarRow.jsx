@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from '../styles/styles.css';
 
 const CalenderRow = ({
-  times, dayNum, weekNum, admin, data, changeTime, removeShift, id,
+  times, dayNum, weekNum, admin, data, changeTime, removeShift, id, employeePage,
 }) => {
   CalenderRow.propTypes = {
     times: PropTypes.object.isRequired,
@@ -15,7 +15,18 @@ const CalenderRow = ({
     changeTime: PropTypes.func.isRequired,
     removeShift: PropTypes.func.isRequired,
     id: PropTypes.number.isRequired,
+    employeePage: PropTypes.bool,
   };
+  const DAYS = {
+    0: 'Sunday',
+    1: 'Monday',
+    2: 'Tuesday',
+    3: 'Wednesday',
+    4: 'Thursday',
+    5: 'Friday',
+    6: 'Saturday',
+  };
+
   const { shifts, name } = data;
   const timesArr = [];
   Object.keys(times).sort((a, b) => {
@@ -54,7 +65,7 @@ const CalenderRow = ({
   return (
     <div>
       <div className={styles.firstCol}>
-        {name}
+        {employeePage ? DAYS[dayNum] : name}
         <br />
         {admin ?
           <select

@@ -29,6 +29,7 @@ const EmployeeCalendar = ({
           weekNum={weekNum}
           removeShift={removeShift}
           admin={admin}
+          employeePage
         />
       ))}
     </div>

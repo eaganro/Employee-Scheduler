@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import styles from '../styles/styles.css';
 
-const CalItem = ({ data, removeCalItem, id }) => (
+const CalItem = ({ data, removeCalItem, id, toCalendar }) => (
   <div className={styles.manageList}>
-    <span style={{ fontWeight: '600' }}>Name: <span style={{ fontWeight: '400' }}>{data.name}</span></span>
+    <span style={{ fontWeight: '600' }}>Name: <button onClick={() => toCalendar(id)}><span style={{ fontWeight: '400' }}>{data.name}</span></button></span>
     <button
       className={styles.removeButton}
       onClick={() => removeCalItem(id)}

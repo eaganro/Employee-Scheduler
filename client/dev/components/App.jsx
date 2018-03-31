@@ -57,6 +57,7 @@ export default class App extends React.Component {
     this.addCalItem = this.addCalItem.bind(this);
     this.removeCalItem = this.removeCalItem.bind(this);
     this.toEmployeeCalendar = this.toEmployeeCalendar.bind(this);
+    this.toCalendar = this.toCalendar.bind(this);
 
 
     this.nextWeek = this.nextWeek.bind(this);
@@ -367,6 +368,13 @@ export default class App extends React.Component {
     });
   }
 
+  toCalendar(calId) {
+    this.setState({
+      calId,
+      employeePage: 0,
+    }, () => this.getCalendars());
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -466,6 +474,7 @@ export default class App extends React.Component {
                   addCalItem={this.addCalItem}
                   removeCalItem={this.removeCalItem}
                   calendars={this.state.calendars}
+                  toCalendar={this.toCalendar}
                 />
               </div>:
             ''}

@@ -10,6 +10,7 @@ export default class CalList extends React.Component {
       calendars: PropTypes.object.isRequired,
       removeCalItem: PropTypes.func.isRequired,
       addCalItem: PropTypes.func.isRequired,
+      toCalendar: PropTypes.func.isRequired,
     };
     this.state = {
       name: '',
@@ -31,6 +32,7 @@ export default class CalList extends React.Component {
         id={Number(c)}
         data={calendars[c]}
         removeCalItem={this.props.removeCalItem}
+        toCalendar={this.props.toCalendar}
       />);
     });
     console.log(cals);
