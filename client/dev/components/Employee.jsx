@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Container, Grid } from 'semantic-ui-react';
+import { Button, Icon, Container } from 'semantic-ui-react';
 
 import styles from '../styles/styles.css';
 
@@ -18,6 +18,7 @@ const Employee = ({
       </Button>
       <Button
         style={{ width: '20%' }}
+        color="red"
         onClick={() => removeEmployee(id)}
         icon="user delete"
       />

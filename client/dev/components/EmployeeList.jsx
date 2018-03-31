@@ -53,7 +53,7 @@ export default class EmployeeList extends React.Component {
           placeholder="Employee Name..."
           action={<Button
             style={{ width: '20%' }}
-            primary
+            color="green"
             onClick={() => addEmployee(this.state.name)}
             content="Add"
           />}

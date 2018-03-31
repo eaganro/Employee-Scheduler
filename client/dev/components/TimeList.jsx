@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Icon, Container, Input, Segment, Dropdown, Grid } from 'semantic-ui-react';
 
 import Time from './Time';
 
@@ -27,39 +28,39 @@ export default class TimeList extends React.Component {
     this.bEnd2Change = this.bEnd2Change.bind(this);
   }
 
-  startChange(e) {
+  startChange(e, data) {
     this.setState({
-      start: e.target.value,
+      start: data.value,
     });
   }
 
-  endChange(e) {
+  endChange(e, data) {
     this.setState({
-      end: e.target.value,
+      end: data.value,
     });
   }
 
-  bStartChange(e) {
+  bStartChange(e, data) {
     this.setState({
-      bStart: e.target.value,
+      bStart: data.value,
     });
   }
 
-  bEndChange(e) {
+  bEndChange(e, data) {
     this.setState({
-      bEnd: e.target.value,
+      bEnd: data.value,
     });
   }
 
-  bStart2Change(e) {
+  bStart2Change(e, data) {
     this.setState({
-      bStart2: e.target.value,
+      bStart2: data.value,
     });
   }
 
-  bEnd2Change(e) {
+  bEnd2Change(e, data) {
     this.setState({
-      bEnd2: e.target.value,
+      bEnd2: data.value,
     });
   }
 
@@ -103,54 +104,115 @@ export default class TimeList extends React.Component {
     });
 
     return (
-      <div>
+      <Container>
         {timesArr}
-        <div>
-          <select onChange={this.startChange}>
-            <option>Shift Start</option>
-            {[...Array(25)].map((x, i) => (
-              <option>{8 + (i / 2)}</option>
-            ))}
-          </select>
-          <select onChange={this.endChange}>
-            <option>Shift End</option>
-            {[...Array(25)].map((x, i) => (
-              <option>{8 + (i / 2)}</option>
-            ))}
-          </select>
-
-          <select onChange={this.bStartChange}>
-            <option>Break Start</option>
-            {[...Array(25)].map((x, i) => (
-              <option>{8 + (i / 2)}</option>
-            ))}
-          </select>
-          <select onChange={this.bEndChange}>
-            <option>Break End</option>
-            {[...Array(25)].map((x, i) => (
-              <option>{8 + (i / 2)}</option>
-            ))}
-          </select>
-
-          <select onChange={this.bStart2Change}>
-            <option>Break 2 Start</option>
-            {[...Array(25)].map((x, i) => (
-              <option>{8 + (i / 2)}</option>
-            ))}
-          </select>
-          <select onChange={this.bEnd2Change}>
-            <option>Break 2 End</option>
-            {[...Array(25)].map((x, i) => (
-              <option>{8 + (i / 2)}</option>
-            ))}
-          </select>
-          <button
+        <div style={{ display: 'grid', gridTemplateColumns: '5fr 1fr' }}>
+          <div>
+            <Dropdown
+              text={`Shift Start :  ${this.state.start}`}
+              style={{ width: '50%' }}
+              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              onChange={this.startChange}
+              inline
+              scrolling
+            />
+            <Dropdown
+              text={`Shift End :  ${this.state.end}`}
+              style={{ width: '50%' }}
+              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              onChange={this.endChange}
+              inline
+              scrolling
+            />
+            <Dropdown
+              text={`Break Start: ${this.state.bStart}`}
+              style={{ width: '50%' }}
+              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              onChange={this.bStartChange}
+              inline
+              scrolling
+            />
+            <Dropdown
+              text={`Break End: ${this.state.bEnd}`}
+              style={{ width: '50%' }}
+              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              onChange={this.bEndChange}
+              inline
+              scrolling
+            />
+            <Dropdown
+              text={`Break Start: ${this.state.bStart2}`}
+              style={{ width: '50%' }}
+              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              onChange={this.bStart2Change}
+              inline
+              scrolling
+            />
+            <Dropdown
+              text={`Break End: ${this.state.bEnd2}`}
+              style={{ width: '50%' }}
+              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              onChange={this.bEnd2Change}
+              inline
+              scrolling
+            />
+          </div>
+          <Button
+            content="Add"
+            fluid
+            color="green"
             onClick={() => addTime(this.state)}
-          >
-            Add Time
-          </button>
+          />
         </div>
-      </div>
+      </Container>
+      // <div>
+        
+      //   <div>
+      //     <select onChange={this.startChange}>
+      //       <option>Shift Start</option>
+      //       {[...Array(25)].map((x, i) => (
+      //         <option>{8 + (i / 2)}</option>
+      //       ))}
+      //     </select>
+      //     <select onChange={this.endChange}>
+      //       <option>Shift End</option>
+      //       {[...Array(25)].map((x, i) => (
+      //         <option>{8 + (i / 2)}</option>
+      //       ))}
+      //     </select>
+
+      //     <select onChange={this.bStartChange}>
+      //       <option>Break Start</option>
+      //       {[...Array(25)].map((x, i) => (
+      //         <option>{8 + (i / 2)}</option>
+      //       ))}
+      //     </select>
+      //     <select onChange={this.bEndChange}>
+      //       <option>Break End</option>
+      //       {[...Array(25)].map((x, i) => (
+      //         <option>{8 + (i / 2)}</option>
+      //       ))}
+      //     </select>
+
+      //     <select onChange={this.bStart2Change}>
+      //       <option>Break 2 Start</option>
+      //       {[...Array(25)].map((x, i) => (
+      //         <option>{8 + (i / 2)}</option>
+      //       ))}
+      //     </select>
+      //     <select onChange={this.bEnd2Change}>
+      //       <option>Break 2 End</option>
+      //       {[...Array(25)].map((x, i) => (
+      //         <option>{8 + (i / 2)}</option>
+      //       ))}
+      //     </select>
+      //     <button
+      //       onClick={() => addTime(this.state)}
+      //     >
+      //       Add Time
+      //     </button>
+      //   </div>
+      // </div>
     );
   }
 }
