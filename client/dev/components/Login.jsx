@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { Input } from 'semantic-ui-react';
+import { Input, Button, Segment, Grid, Header } from 'semantic-ui-react';
 
-import App from './App'
+import App from './App';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -108,69 +108,177 @@ export default class Login extends React.Component {
     let login;
     if (this.state.empLogin && this.state.signup === false) {
       login = (
-        <div>
-          Viewer Login: <br />
-          Username: <input value={this.state.username} onChange={this.nameChange} type="text" /> <br />
-          Password: <input value={this.state.password} onChange={this.passChange} type="password" /> <br />
-          <button onClick={this.employeeLogin}>Login</button> <br />
-          <button
-            onClick={() => this.setState({ empLogin: false, username: '', password: '' })}
-          >
-            To Admin Login
-          </button>
-          <br />
-          <button
-            onClick={() => this.setState({ signup: true, username: '', password: '' })}
-          >
-            To Admin Signup
-          </button>
-        </div>
+        <Grid centered>
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row>
+            <Segment.Group raised compact >
+              <Segment compact>
+                <Input
+                  value={this.state.username}
+                  onChange={this.nameChange}
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="Employee Username..."
+                />
+                <Input
+                  value={this.state.password}
+                  onChange={this.passChange}
+                  icon="protect"
+                  iconPosition="left"
+                  placeholder="Employee Password..."
+                />
+                <Button
+                  primary
+                  onClick={this.employeeLogin}
+                >
+                  Login
+                </Button>
+              </Segment>
+              <Segment compact>
+                <Button.Group>
+                  <Button
+                    onClick={() => this.setState({ empLogin: false, username: '', password: '' })}
+                  >
+                    Admin Login
+                  </Button>
+                  <Button
+                    onClick={() => this.setState({ signup: true, username: '', password: '' })}
+                  >
+                    Admin Signup
+                  </Button>
+                </Button.Group>
+              </Segment>
+            </Segment.Group>
+          </Grid.Row>
+          <Grid.Row />
+        </Grid>
       );
     } else if (this.state.signup === false) {
       login = (
-        <div>
-          Admin Login: <br />
-          <Input
-            value={this.state.username}
-            onChange={this.nameChange}
-            icon="user"
-            iconPosition="left"
-            placeholder="Admin Username..."
-          />
-          <Input
-            value={this.state.password}
-            onChange={this.passChange}
-            icon="protect"
-            iconPosition="left"
-            placeholder="Admin Password..."
-          />
-          <button onClick={this.adminLogin}>Login</button> <br />
-          <button
-            onClick={() => this.setState({ empLogin: true, username: '', password: '' })}
-          >
-            To Viewer Login
-          </button>
-          <br />
-          <button onClick={() => this.setState({ signup: true, username: '', password: '' })}>To Admin Signup</button>
-        </div>
+        <Grid centered>
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row>
+            <Segment.Group raised compact >
+              <Segment compact>
+                <Input
+                  value={this.state.username}
+                  onChange={this.nameChange}
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="Admin Username..."
+                />
+                <Input
+                  value={this.state.password}
+                  onChange={this.passChange}
+                  icon="protect"
+                  iconPosition="left"
+                  placeholder="Admin Password..."
+                />
+                <Button
+                  primary
+                  onClick={this.adminLogin}
+                >
+                  Login
+                </Button>
+              </Segment>
+              <Segment compact>
+                <Button.Group>
+                  <Button
+                    onClick={() => this.setState({ empLogin: true, username: '', password: '' })}
+                  >
+                    Employee Login
+                  </Button>
+                  <Button
+                    onClick={() => this.setState({ signup: true, username: '', password: '' })}
+                  >
+                    Admin Signup
+                  </Button>
+                </Button.Group>
+              </Segment>
+            </Segment.Group>
+          </Grid.Row>
+          <Grid.Row />
+        </Grid>
       );
     } else {
       login = (
-        <div>
-          Admin Login: <br />
-          Admin Username: <input value={this.state.username} onChange={this.nameChange} type="text" /> <br />
-          Admin Password: <input value={this.state.password} onChange={this.passChange} type="password" /> <br />
-          Employee Username: <input value={this.state.empname} onChange={this.empNameChange} type="text" /> <br />
-          Employee Password: <input value={this.state.emppass} onChange={this.empPassChange} type="password" /> <br />
-          <button onClick={this.signUp}>Sign Up</button> <br />
-          <button
-            onClick={() => this.setState({
-              signup: false, empLogin: true, username: '', password: '',
-            })}
-          >
-            To Login
-          </button>
-        </div>
+        <Grid centered>
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row />
+          <Grid.Row>
+            <Segment.Group raised compact >
+              <Segment compact textAlign="left">
+                <Input
+                  value={this.state.username}
+                  onChange={this.nameChange}
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="Admin Username..."
+                />
+                <Input
+                  value={this.state.password}
+                  onChange={this.passChange}
+                  icon="protect"
+                  iconPosition="left"
+                  placeholder="Admin Password..."
+                />
+                <br />
+                <Input
+                  value={this.state.empname}
+                  onChange={this.empNameChange}
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="Employee Username..."
+                />
+                <Input
+                  value={this.state.emppass}
+                  onChange={this.empPassChange}
+                  icon="protect"
+                  iconPosition="left"
+                  placeholder="Employee Password..."
+                />
+                <Button
+                  primary
+                  onClick={this.signUp}
+                >
+                  Sign Up
+                </Button>
+              </Segment>
+              <Segment compact>
+                <Button.Group>
+                  <Button
+                    onClick={() => this.setState({ signup: false, empLogin: false, username: '', password: '' })}
+                  >
+                    Admin Login
+                  </Button>
+                  <Button
+                    onClick={() => this.setState({ signup: false, empLogin: true, username: '', password: '' })}
+                  >
+                    Employee Login
+                  </Button>
+                </Button.Group>
+              </Segment>
+            </Segment.Group>
+          </Grid.Row>
+          <Grid.Row />
+        </Grid>
       );
     }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Icon, Container, Input, Segment } from 'semantic-ui-react';
 
 import Employee from './Employee';
 
@@ -41,18 +42,24 @@ export default class EmployeeList extends React.Component {
     });
 
     return (
-      <div>
+      <Container>
         {emps}
-        <div>
-          Employee Name:
-          <input value={this.state.name} onChange={this.nameChange} type="text" id="nameInput" />
-          <button
+        <Input
+          fluid
+          value={this.state.name}
+          onChange={this.nameChange}
+          icon="user"
+          iconPosition="left"
+          placeholder="Employee Name..."
+          action={<Button
+            style={{ width: '20%' }}
+            primary
             onClick={() => addEmployee(this.state.name)}
-          >
-            Add Employee
-          </button>
-        </div>
-      </div>
+            content="Add"
+          />}
+        />
+        
+      </Container>
     );
   }
 }

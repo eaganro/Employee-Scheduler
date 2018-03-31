@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { Container, Segment, Header, Sidebar, Button, Menu, Icon, Dropdown } from 'semantic-ui-react';
 
 
 import EmployeeList from './EmployeeList';
@@ -99,6 +100,7 @@ export default class App extends React.Component {
           name: c.name,
         };
       });
+      this.state.calId = calId;
       this.state.calendars = calendars;
       this.getData(calId);
     });
@@ -378,109 +380,218 @@ export default class App extends React.Component {
   render() {
     console.log(this.state);
     return (
-      <div className={styles.inputPage}>
-        <div className={styles.calendarArea}>
-          {this.state.user.admin ?
-            <span>
-              <button onClick={this.copyWeek}>Copy Week</button>
-              <button onClick={this.pasteWeek}>Paste Week</button>
-            </span> :
-            ''}
-          <button
-            onClick={() => this.setState({ week: this.state.week - 1 })}
-            style={{
-              visibility: this.state.week === 0 ? 'hidden' : 'visible',
-            }}
-          >
-            Previous Week
-          </button>
-          <button onClick={this.nextWeek}>Next Week</button>
-          <select
-            onChange={(e) => {
+      <Container fluid>
+        <Header as="h2" textAlign="center" attached="top">
+          <Dropdown
+            value={String(this.state.calId)}
+            options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
+            onChange={(e, data) => {
               this.setState({
-                calId: e.target.options[e.target.selectedIndex].value,
+                calId: data.value,
               }, () => {
                 this.getCalendars();
               });
             }}
-          >
-            {Object.keys(this.state.calendars).map(c => <option value={c}>{this.state.calendars[c].name}</option>)}
-          </select>
-          {this.state.employeePage ?
-            <EmployeeCalendar
-              employeeId={this.state.employeePage}
-              employeeData={this.state.employees[this.state.employeePage]}
-              times={this.state.times}
-              changeET={this.changeEmployeeTime}
-              removeShift={this.removeShift}
-              weekNum={this.state.week}
-              admin={this.state.user.admin}
-            /> :
-            [...Array(7)].map((c, i) => (
-              <Calendar
-                employees={this.state.employees}
-                times={this.state.times}
-                changeET={this.changeEmployeeTime}
-                addES={this.addEmployeeShift}
-                removeShift={this.removeShift}
-                schedule={this.state.schedule}
-                dayNum={i}
-                weekNum={this.state.week}
-                admin={this.state.user.admin}
-                copyDay={this.copyDay}
-                pasteDay={this.pasteDay}
-                date={this.state.firstSun}
-              />
-            ))
-          }
-        </div>
-        <div className={this.state.showPanel ? styles.controlPanel : styles.hidePanel}>
-          <button
-            style={{ width: '100%' }}
+          />
+          <Button
             onClick={() => this.setState({ showPanel: !this.state.showPanel })}
+            floated="right"
+            style={{ width: '200px' }}
           >
             {this.state.showPanel ? 'Hide' : 'Show'} Control Panel
-          </button>
-          <div className={styles.empList}>
-            {this.state.showPanel ?
-              <div>
-                <p>Manage Employees</p>
-                <EmployeeList
-                  addEmployee={this.addEmployee}
-                  removeEmployee={this.removeEmployee}
-                  employees={this.state.employees}
-                  toEmployeeCalendar={this.toEmployeeCalendar}
-                />
-              </div> :
-            ''}
-          </div>
-          <div className={styles.timeList}>
-            {this.state.showPanel ?
-              <div>
-                <p>Manage Times</p>
-                <TimeList
-                  addTime={this.addTime}
-                  removeTime={this.removeTime}
+          </Button>
+        </Header>
+        <Sidebar.Pushable as={Segment}>
+          <Sidebar
+            as={Menu}
+            animation="overlay"
+            width="wide"
+            direction="right"
+            visible={this.state.showPanel}
+            vertical
+          >
+            <Menu.Item name="employees">
+              <Icon name="users" />
+              <p>Manage Employees</p>
+              <EmployeeList
+                addEmployee={this.addEmployee}
+                removeEmployee={this.removeEmployee}
+                employees={this.state.employees}
+                toEmployeeCalendar={this.toEmployeeCalendar}
+              />
+            </Menu.Item>
+            <Menu.Item name="times">
+              <Icon name="time" />
+              <p>Manage Times</p>
+              <TimeList
+                addTime={this.addTime}
+                removeTime={this.removeTime}
+                times={this.state.times}
+              />
+            </Menu.Item>
+            <Menu.Item name="caldendars">
+              <Icon name="calendar" />
+              <p>Manage Calendars</p>
+              <CalList
+                addCalItem={this.addCalItem}
+                removeCalItem={this.removeCalItem}
+                calendars={this.state.calendars}
+                toCalendar={this.toCalendar}
+              />
+            </Menu.Item>
+          </Sidebar>
+          <Sidebar.Pusher>
+            <Segment attached>
+              {this.state.user.admin ?
+                <span>
+                  <button onClick={this.copyWeek}>Copy Week</button>
+                  <button onClick={this.pasteWeek}>Paste Week</button>
+                </span> :
+              ''}
+              <button
+                onClick={() => this.setState({ week: this.state.week - 1 })}
+                style={{
+                  visibility: this.state.week === 0 ? 'hidden' : 'visible',
+                }}
+              >
+                Previous Week
+              </button>
+              <button onClick={this.nextWeek}>Next Week</button>
+              {this.state.employeePage ?
+                <EmployeeCalendar
+                  employeeId={this.state.employeePage}
+                  employeeData={this.state.employees[this.state.employeePage]}
                   times={this.state.times}
-                />
-              </div>:
-            ''}
-          </div>
-          <div className={styles.calList}>
-            {this.state.showPanel ?
-              <div>
-                <p>Manage Calendars</p>
-                <CalList
-                  addCalItem={this.addCalItem}
-                  removeCalItem={this.removeCalItem}
-                  calendars={this.state.calendars}
-                  toCalendar={this.toCalendar}
-                />
-              </div>:
-            ''}
-          </div>
-        </div>
-      </div>
+                  changeET={this.changeEmployeeTime}
+                  removeShift={this.removeShift}
+                  weekNum={this.state.week}
+                  admin={this.state.user.admin}
+                /> :
+                [...Array(7)].map((c, i) => (
+                  <Calendar
+                    employees={this.state.employees}
+                    times={this.state.times}
+                    changeET={this.changeEmployeeTime}
+                    addES={this.addEmployeeShift}
+                    removeShift={this.removeShift}
+                    schedule={this.state.schedule}
+                    dayNum={i}
+                    weekNum={this.state.week}
+                    admin={this.state.user.admin}
+                    copyDay={this.copyDay}
+                    pasteDay={this.pasteDay}
+                    date={this.state.firstSun}
+                  />
+                ))
+              }
+            </Segment>
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
+      </Container>
+
+      // <div className={styles.inputPage}>
+      //   <div className={styles.calendarArea}>
+      //     {this.state.user.admin ?
+      //       <span>
+      //         <button onClick={this.copyWeek}>Copy Week</button>
+      //         <button onClick={this.pasteWeek}>Paste Week</button>
+      //       </span> :
+      //       ''}
+      //     <button
+      //       onClick={() => this.setState({ week: this.state.week - 1 })}
+      //       style={{
+      //         visibility: this.state.week === 0 ? 'hidden' : 'visible',
+      //       }}
+      //     >
+      //       Previous Week
+      //     </button>
+      //     <button onClick={this.nextWeek}>Next Week</button>
+      //     <select
+      //       onChange={(e) => {
+      //         this.setState({
+      //           calId: e.target.options[e.target.selectedIndex].value,
+      //         }, () => {
+      //           this.getCalendars();
+      //         });
+      //       }}
+      //     >
+      //       {Object.keys(this.state.calendars).map(c => <option value={c}>{this.state.calendars[c].name}</option>)}
+      //     </select>
+      //     {this.state.employeePage ?
+      //       <EmployeeCalendar
+      //         employeeId={this.state.employeePage}
+      //         employeeData={this.state.employees[this.state.employeePage]}
+      //         times={this.state.times}
+      //         changeET={this.changeEmployeeTime}
+      //         removeShift={this.removeShift}
+      //         weekNum={this.state.week}
+      //         admin={this.state.user.admin}
+      //       /> :
+      //       [...Array(7)].map((c, i) => (
+      //         <Calendar
+      //           employees={this.state.employees}
+      //           times={this.state.times}
+      //           changeET={this.changeEmployeeTime}
+      //           addES={this.addEmployeeShift}
+      //           removeShift={this.removeShift}
+      //           schedule={this.state.schedule}
+      //           dayNum={i}
+      //           weekNum={this.state.week}
+      //           admin={this.state.user.admin}
+      //           copyDay={this.copyDay}
+      //           pasteDay={this.pasteDay}
+      //           date={this.state.firstSun}
+      //         />
+      //       ))
+      //     }
+      //   </div>
+      // <div className={this.state.showPanel ? styles.controlPanel : styles.hidePanel}>
+      //   <button
+      //     style={{ width: '100%' }}
+      //     onClick={() => this.setState({ showPanel: !this.state.showPanel })}
+      //   >
+      //     {this.state.showPanel ? 'Hide' : 'Show'} Control Panel
+      //   </button>
+      //   <div className={styles.empList}>
+      //     {this.state.showPanel ?
+      //       <div>
+      //         <p>Manage Employees</p>
+      //         <EmployeeList
+      //           addEmployee={this.addEmployee}
+      //           removeEmployee={this.removeEmployee}
+      //           employees={this.state.employees}
+      //           toEmployeeCalendar={this.toEmployeeCalendar}
+      //         />
+      //       </div> :
+      //     ''}
+      //   </div>
+      //   <div className={styles.timeList}>
+      //     {this.state.showPanel ?
+      //       <div>
+      //         <p>Manage Times</p>
+      //         <TimeList
+      //           addTime={this.addTime}
+      //           removeTime={this.removeTime}
+      //           times={this.state.times}
+      //         />
+      //       </div>:
+      //     ''}
+      //   </div>
+      //   <div className={styles.calList}>
+      //     {this.state.showPanel ?
+      //       <div>
+      //         <p>Manage Calendars</p>
+      //         <CalList
+      //           addCalItem={this.addCalItem}
+      //           removeCalItem={this.removeCalItem}
+      //           calendars={this.state.calendars}
+      //           toCalendar={this.toCalendar}
+      //         />
+      //       </div>:
+      //     ''}
+      //   </div>
+      // </div>
+      // </div>
     );
   }
 }
