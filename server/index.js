@@ -7,9 +7,25 @@ const db = require('../database/');
 
 const app = express();
 
+app.use(session({
+  secret: 'it is a race',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {},
+}));
+
 app.use(parser.json());
 
 app.use(express.static(path.join(__dirname, '/../client/dist')));
+
+app.get('/check', (req, res) => {
+  console.log(req.session.userId);
+  if (req.session.userId) {
+    res.status(200).send({ id: req.session.userId, date: req.session.createdate, admin: req.session.admin });
+  } else {
+    res.status(403).send('nothing');
+  }
+});
 
 app.post('/employee/add', (req, res) => {
   db.addEmployee(req.body.name, req.body.id, (stat, result) => {
@@ -112,25 +128,20 @@ app.post('/shift', (req, res) => {
 });
 
 app.post('/shift/add', (req, res) => {
-  console.log(req.body);
   db.addShift(req.body, (stat, result) => {
     if (stat) {
       res.status(200).send(result);
     } else {
-      console.log(result);
       res.status(400).send(result);
     }
   });
 });
 
 app.post('/shift/remove', (req, res) => {
-  console.log(req.body);
   db.removeShift(req.body, (stat, result) => {
     if (stat) {
-      console.log(result);
       res.status(200).send(result);
     } else {
-      console.log(result);
       res.status(400).send(result);
     }
   });
@@ -139,11 +150,9 @@ app.post('/shift/remove', (req, res) => {
 app.post('/signup', (req, res) => {
   db.signUp(req.body, (stat, result, calID) => {
     if (stat) {
-      console.log(result);
       res.status(200).send(result);
     } else {
       let newRes = result;
-      console.log(result);
       newRes[0].calID = calID;
       res.status(400).send(newRes);
     }
@@ -153,10 +162,12 @@ app.post('/signup', (req, res) => {
 app.post('/login/admin', (req, res) => {
   db.adminLogin(req.body, (stat, result) => {
     if (stat) {
-      console.log(result);
+      req.session.userId = result[0].id;
+      req.session.createdate = result[0].createdate;
+      req.session.admin = true;
+      console.log(req.session);
       res.status(200).send(result);
     } else {
-      console.log(result);
       res.status(400).send(result);
     }
   });
@@ -165,10 +176,11 @@ app.post('/login/admin', (req, res) => {
 app.post('/login/employee', (req, res) => {
   db.employeeLogin(req.body, (stat, result) => {
     if (stat) {
-      console.log(result);
+      req.session.userId = result[0].id;
+      req.session.createdate = result[0].createdate;
+      req.session.admin = false;
       res.status(200).send(result);
     } else {
-      console.log(result);
       res.status(400).send(result);
     }
   });
@@ -176,16 +188,12 @@ app.post('/login/employee', (req, res) => {
 
 app.post('/data', (req, res) => {
   const { userId } = req.body;
-  console.log(req.body);
   db.getEmployees(userId, (statEmp, resultEmp) => {
     if (statEmp) {
-      console.log(resultEmp);
       db.getTimes(userId, (statTime, resultTime) => {
         if (statTime) {
-          console.log(resultTime);
           db.getShifts(req.body, (statShift, resultShift) => {
             if (statShift) {
-              console.log(resultShift);
               res.status(200).send({
                 resultEmp, resultTime, resultShift,
               });

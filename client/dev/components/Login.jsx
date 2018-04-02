@@ -29,6 +29,19 @@ export default class Login extends React.Component {
     this.signUp = this.signUp.bind(this);
   }
 
+  componentWillMount() {
+    axios.get('/check').then((data) => {
+      console.log(data);
+      const { admin, date, id } = data.data;
+      this.setState({
+        admin,
+        id,
+        date,
+        loggedIn: true,
+      });
+    }).catch(err => console.log('not logged in'));
+  }
+
   nameChange(e) {
     this.setState({
       username: e.target.value,
