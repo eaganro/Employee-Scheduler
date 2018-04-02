@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Container, Input, Segment } from 'semantic-ui-react';
+import { Header, Button, Icon, Container, Input, Segment } from 'semantic-ui-react';
 
 import Employee from './Employee';
 
@@ -48,7 +48,7 @@ export default class EmployeeList extends React.Component {
           fluid
           value={this.state.name}
           onChange={this.nameChange}
-          icon="user"
+          icon="add user"
           iconPosition="left"
           placeholder="Employee Name..."
           action={<Button

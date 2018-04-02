@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Container, Segment, Header, Sidebar, Button, Accordion, Menu, Icon, Dropdown, Sticky } from 'semantic-ui-react';
+import { Container, Segment, Header, Sidebar, Button, Accordion, Menu, Icon, Dropdown, Sticky, Message } from 'semantic-ui-react';
 
 
 import EmployeeList from './EmployeeList';
@@ -44,7 +44,7 @@ export default class App extends React.Component {
       week: 0,
       savedDay: {},
       savedWeek: {},
-      firstSun: '',
+      firstMon: '',
       showPanel: true,
       employeePage: null,
       accordionIndexs: [],
@@ -79,11 +79,11 @@ export default class App extends React.Component {
 
   componentWillMount() {
     let date = new Date(this.props.date);
-    date.setDate(date.getDate() - date.getDay());
+    date.setDate((date.getDate() - date.getDay()) + 1);
     // this.setState({
     //   firstSun: date,
     // });
-    this.state.firstSun = date;
+    this.state.firstMon = date;
     this.getCalendars();
   }
 
@@ -395,27 +395,70 @@ export default class App extends React.Component {
     console.log(this.state);
     return (
       <Container fluid>
-        <Header as="h2" textAlign="center" attached="top">
-          <Dropdown
-            value={String(this.state.calId)}
-            options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
-            onChange={(e, data) => {
-              this.setState({
-                calId: data.value,
-              }, () => {
-                this.getCalendars();
-              });
-            }}
-          />
-          <Button
-            onClick={() => this.setState({ showPanel: !this.state.showPanel })}
-            floated="right"
-            style={{ width: '200px' }}
-          >
-            {this.state.showPanel ? 'Hide' : 'Show'} Control Panel
-          </Button>
-        </Header>
-        <Sidebar.Pushable as={Segment} style={{ height: '91vh' }}>
+        <Container fluid style={{ display: 'grid', gridTemplateColumns: '3fr 2fr 3fr 1fr' }}>
+          <div style={{ position: 'relative', textAlign: 'center' }}>
+            <Button
+              onClick={() => this.setState({ week: this.state.week - 1 })}
+              style={{
+                visibility: this.state.week === 0 ? 'hidden' : 'visible',
+                position: 'absolute',
+                bottom: '0',
+                right: '0',
+                padding: '3px 3px 6px 3px',
+              }}
+              icon
+            >
+              <Icon size="big" name="arrow circle left" />
+            </Button>
+          </div>
+          <Header as="h2" textAlign="center">
+            <Dropdown
+              value={String(this.state.calId)}
+              options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
+              onChange={(e, data) => {
+                this.setState({
+                  calId: data.value,
+                }, () => {
+                  this.getCalendars();
+                });
+              }}
+            />
+            <Header.Subheader>
+              {`${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24)).toDateString()} -
+              ${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24) + (6*1000*60*60*24)).toDateString()}`}
+            </Header.Subheader>
+          </Header>
+          <div style={{ position: 'relative' }}>
+            <Button
+              onClick={this.nextWeek}
+              style={{
+                position: 'absolute',
+                bottom: '0',
+                left: '0',
+                padding: '3px 3px 6px 3px',
+              }}
+              icon
+            >
+              <Icon size="big" name="arrow circle right" />
+            </Button>
+          </div>
+          <div style={{ position: 'relative' }}>
+            <Button
+              onClick={() => this.setState({ showPanel: !this.state.showPanel })}
+              floated="right"
+              style={{ position: 'absolute', bottom: '0', right: '0' }}
+            >
+              {this.state.showPanel ? 'Hide' : 'Show'} Panel
+            </Button>
+          </div>
+        </Container>
+        {this.state.user.admin ?
+          <Button.Group compact>
+            <Button compact onClick={this.copyWeek}>Copy Week</Button>
+            <Button compact onClick={this.pasteWeek}>Paste Week</Button>
+          </Button.Group> :
+        ''}
+        <Sidebar.Pushable as={Container} fluid>
           <Sidebar
             animation="overlay"
             width="wide"
@@ -423,6 +466,7 @@ export default class App extends React.Component {
             visible={this.state.showPanel}
             vertical
             style={{ boxShadow: '0 0 0' }}
+            fluid
           >
             <Accordion as={Menu} vertical fluid exclusive={false}>
               <Menu.Item name="caldendars">
@@ -478,21 +522,6 @@ export default class App extends React.Component {
             </Accordion>
           </Sidebar>
           <Sidebar.Pusher>
-            {this.state.user.admin ?
-              <span>
-                <button onClick={this.copyWeek}>Copy Week</button>
-                <button onClick={this.pasteWeek}>Paste Week</button>
-              </span> :
-            ''}
-            <button
-              onClick={() => this.setState({ week: this.state.week - 1 })}
-              style={{
-                visibility: this.state.week === 0 ? 'hidden' : 'visible',
-              }}
-            >
-              Previous Week
-            </button>
-            <button onClick={this.nextWeek}>Next Week</button>
             {this.state.employeePage ?
               <EmployeeCalendar
                 employeeId={this.state.employeePage}
@@ -516,7 +545,7 @@ export default class App extends React.Component {
                   admin={this.state.user.admin}
                   copyDay={this.copyDay}
                   pasteDay={this.pasteDay}
-                  date={this.state.firstSun}
+                  date={this.state.firstMon}
                 />
               ))
             }

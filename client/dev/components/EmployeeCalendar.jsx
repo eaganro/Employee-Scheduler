@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Header } from 'semantic-ui-react';
 
 import CalenderRow from './CalendarRow';
 
@@ -17,7 +18,10 @@ const EmployeeCalendar = ({
   };
   console.log(employeeData);
   return (
-    <div>
+    <div style={{ height: '80vh', margin: '20px' }}>
+      <Header as="h3">
+        {employeeData.name}
+      </Header>
       {[...Array(7)].map((e, i) => (
         <CalenderRow
           key={i}
