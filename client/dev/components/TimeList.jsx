@@ -111,7 +111,7 @@ export default class TimeList extends React.Component {
             <Dropdown
               text={`Shift Start :  ${this.state.start}`}
               style={{ width: '50%' }}
-              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              options={[...Array(27)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
               onChange={this.startChange}
               inline
               scrolling
@@ -119,7 +119,7 @@ export default class TimeList extends React.Component {
             <Dropdown
               text={`Shift End :  ${this.state.end}`}
               style={{ width: '50%' }}
-              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              options={[...Array(27)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
               onChange={this.endChange}
               inline
               scrolling
@@ -127,7 +127,7 @@ export default class TimeList extends React.Component {
             <Dropdown
               text={`Break Start: ${this.state.bStart}`}
               style={{ width: '50%' }}
-              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              options={[...Array(27)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
               onChange={this.bStartChange}
               inline
               scrolling
@@ -135,7 +135,7 @@ export default class TimeList extends React.Component {
             <Dropdown
               text={`Break End: ${this.state.bEnd}`}
               style={{ width: '50%' }}
-              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              options={[...Array(27)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
               onChange={this.bEndChange}
               inline
               scrolling
@@ -143,7 +143,7 @@ export default class TimeList extends React.Component {
             <Dropdown
               text={`Break Start: ${this.state.bStart2}`}
               style={{ width: '50%' }}
-              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              options={[...Array(27)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
               onChange={this.bStart2Change}
               inline
               scrolling
@@ -151,7 +151,7 @@ export default class TimeList extends React.Component {
             <Dropdown
               text={`Break End: ${this.state.bEnd2}`}
               style={{ width: '50%' }}
-              options={[...Array(25)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
+              options={[...Array(27)].map((x, i) => ({ text: 8 + (i / 2), value: 8 + (i / 2) }))}
               onChange={this.bEnd2Change}
               inline
               scrolling

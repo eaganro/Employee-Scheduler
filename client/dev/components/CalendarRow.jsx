@@ -84,7 +84,7 @@ const CalenderRow = ({
         ''}
         <span style={{ fontSize: '10px' }}>-Hrs:{shifts[weekNum][7]}</span>
       </div>
-      {[...Array(24)].map((h, i) => (
+      {[...Array(26)].map((h, i) => (
         <div
           className={shifts[weekNum][dayNum] >= 0 &&
             (i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&

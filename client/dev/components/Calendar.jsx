@@ -31,7 +31,7 @@ const Calendar = ({
   let thisDate = new Date(date.getTime());
   thisDate.setDate(thisDate.getDate() + dayNum + (weekNum*7));
 
-  const topRow = [...Array(25)].map((x, i) => {
+  const topRow = [...Array(27)].map((x, i) => {
     let text = '';
     if ((i - 1) % 2 === 0) {
       text = `${8 + ((i - 1) / 2)}:00`;
