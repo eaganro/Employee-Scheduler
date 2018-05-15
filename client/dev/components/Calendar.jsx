@@ -45,7 +45,7 @@ export default class Calendar extends React.Component {
 
     const topRow = [...Array(14)].map((x, i) => {
       let text = '';
-      text = `${8 + i}:00`;
+      text = `${8 + (i - 1)}:00`;
       // if ((i - 1) % 2 === 0) {
       //   text = `${8 + ((i - 1) / 2)}:00`;
       // } else {
