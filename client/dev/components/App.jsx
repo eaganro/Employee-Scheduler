@@ -533,7 +533,7 @@ export default class App extends React.Component {
               </Menu.Item>
             </Accordion>
           </Sidebar>
-          <Sidebar.Pusher>
+          <Sidebar.Pusher style={{ overflow: 'scroll' }}>
             {this.state.employeePage ?
               <EmployeeCalendar
                 employeeId={this.state.employeePage}
