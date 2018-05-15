@@ -59,7 +59,7 @@ button {
   height: 40px;
   border: 1px solid black;
   vertical-align: top;
-  text-align: center;
+  text-align: left;
 }
 
 .botRow {

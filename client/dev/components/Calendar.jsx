@@ -27,8 +27,8 @@ export default class Calendar extends React.Component {
     } = this.props;
     const empOpts = [];
     Object.keys(employees).sort((a, b) => {
-      const nameA = employees[a].name.toLowerCase().split(' ')[1];
-      const nameB = employees[b].name.toLowerCase().split(' ')[1];
+      const nameA = employees[a].name.toLowerCase().split(' ').slice(-1)[0];
+      const nameB = employees[b].name.toLowerCase().split(' ').slice(-1)[0];
       if (nameA > nameB) {
         return 1;
       } else if (nameA < nameB) {
@@ -73,8 +73,8 @@ export default class Calendar extends React.Component {
     let employeeRows = schedule[weekNum][dayNum].slice();
     if (this.state.sort === 'Alphabetically') {
       employeeRows.sort((a, b) => {
-        const nameA = employees[a].name.toLowerCase().split(' ')[1];
-        const nameB = employees[b].name.toLowerCase().split(' ')[1];
+        const nameA = employees[a].name.toLowerCase().split(' ').slice(-1)[0];
+        const nameB = employees[b].name.toLowerCase().split(' ').slice(-1)[0];
         if (nameA > nameB) {
           return 1;
         } else if (nameA < nameB) {
@@ -84,8 +84,8 @@ export default class Calendar extends React.Component {
       });
     } else {
       employeeRows.sort((a, b) => {
-        const nameA = employees[a].name.toLowerCase().split(' ')[1];
-        const nameB = employees[b].name.toLowerCase().split(' ')[1];
+        const nameA = employees[a].name.toLowerCase().split(' ').slice(-1)[0];
+        const nameB = employees[b].name.toLowerCase().split(' ').slice(-1)[0];
         const colorA = employees[a].color;
         const colorB = employees[b].color;
 
@@ -105,14 +105,16 @@ export default class Calendar extends React.Component {
     let totalWorkers = [...Array(26)].map(x => 0);
     employeeRows.forEach((e) => {
       let { shifts } = employees[e];
-      for (let i = 0; i < 26; i += 1) {
-        if ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
-        (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) {
-          if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart ||
-          (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd))) {
-            if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart2 ||
-            (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd2))) {
-              totalWorkers[i] += 1;
+      if (times[shifts[weekNum][dayNum]]) {
+        for (let i = 0; i < 26; i += 1) {
+          if ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
+          (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) {
+            if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart ||
+            (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd))) {
+              if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart2 ||
+              (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd2))) {
+                totalWorkers[i] += 1;
+              }
             }
           }
         }
