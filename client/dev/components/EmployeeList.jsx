@@ -32,7 +32,16 @@ export default class EmployeeList extends React.Component {
       employees, removeEmployee, addEmployee, toEmployeeCalendar,
     } = this.props;
     const emps = [];
-    Object.keys(employees).sort((a, b) => employees[a].name > employees[b].name).forEach((e) => {
+    Object.keys(employees).sort((a, b) => {
+      const nameA = employees[a].name.toLowerCase();
+      const nameB = employees[b].name.toLowerCase();
+      if (nameA > nameB) {
+        return 1;
+      } else if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    }).forEach((e) => {
       emps.push(<Employee
         id={Number(e)}
         data={employees[e]}

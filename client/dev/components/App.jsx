@@ -329,10 +329,10 @@ export default class App extends React.Component {
     }
   }
 
-  addEmployeeShift(valS, day, week) {
-    const i = Number(valS.slice(0, valS.indexOf('-')));
+  addEmployeeShift(id, valS, day, week) {
+    // const i = Number(valS.slice(0, valS.indexOf('-')));
     const { schedule } = this.state;
-    schedule[week][day].push(i);
+    schedule[week][day].push(id);
     this.setState({
       schedule,
     });

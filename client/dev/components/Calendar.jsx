@@ -23,9 +23,18 @@ const Calendar = ({
   };
 
   const empOpts = [];
-  Object.keys(employees).sort((a, b) => employees[a].name > employees[b].name).forEach((e) => {
+  Object.keys(employees).sort((a, b) => {
+    const nameA = employees[a].name.toLowerCase();
+    const nameB = employees[b].name.toLowerCase();
+    if (nameA > nameB) {
+      return 1;
+    } else if (nameA < nameB) {
+      return -1;
+    }
+    return 0;
+  }).forEach((e) => {
     if (!schedule[weekNum][dayNum].includes(Number(e))) {
-      empOpts.push(<option>{`${e}-${employees[e].name}`}</option>);
+      empOpts.push(<option data-id={e}>{`${employees[e].name}`}</option>);
     }
   });
   let thisDate = new Date(date.getTime());
@@ -72,7 +81,7 @@ const Calendar = ({
           Add Employee: <br />
           <select onChange={(e) => {
             if (e.target.selectedIndex !== 0) {
-              addES(e.target.value, dayNum, weekNum);
+              addES(e.target.options[e.target.selectedIndex].getAttribute('data-id'), e.target.value, dayNum, weekNum);
               e.target.selectedIndex = 0;
             }
           }}

@@ -115,7 +115,7 @@ const CalenderRow = ({
           }}
         >
           <span className={styles.cellText}>
-            {/* {(shifts[weekNum][dayNum] >= 0) &&
+            {(shifts[weekNum][dayNum] >= 0) &&
               ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
               (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) &&
               (((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart &&
@@ -123,7 +123,7 @@ const CalenderRow = ({
               ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart2 &&
               (i / 2) + 8 < times[shifts[weekNum][dayNum]].bEnd2)) ?
               'B' :
-            ' '} */}
+            ' '}
           </span>
         </div>
       ))}
