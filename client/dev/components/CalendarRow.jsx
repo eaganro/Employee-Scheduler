@@ -30,7 +30,7 @@ const CalenderRow = ({
     6: 'Sunday',
   };
 
-  const { shifts, name } = data;
+  const { shifts, name, color } = data;
   const timesArr = [];
   Object.keys(times).sort((a, b) => {
     if (times[a].tStart < times[b].tStart) {
@@ -91,9 +91,14 @@ const CalenderRow = ({
             (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd ?
             styles.calRow :
             styles.calRowOff}
+          style={{
+            backgroundColor: shifts[weekNum][dayNum] >= 0 &&
+            (i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
+            (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd ? color : '',
+          }}
         >
           <span className={styles.cellText}>
-            {(shifts[weekNum][dayNum] >= 0) && 
+            {(shifts[weekNum][dayNum] >= 0) &&
               ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
               (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) &&
               (((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart &&

@@ -75,6 +75,8 @@ export default class App extends React.Component {
     // this.getShifts = this.getShifts.bind(this);
     this.getCalendars = this.getCalendars.bind(this);
     this.getData = this.getData.bind(this);
+
+    this.changeEmployeeColor = this.changeEmployeeColor.bind(this);
   }
 
   componentWillMount() {
@@ -132,6 +134,7 @@ export default class App extends React.Component {
       employees[e.id] = {
         name: e.name,
         shifts: [[]],
+        color: e.color,
       };
     });
     this.state.employees = employees;
@@ -391,6 +394,15 @@ export default class App extends React.Component {
     this.setState({ accordionIndexs });
   }
 
+  changeEmployeeColor(employeeId, color) {
+    axios.post('/employee/color', {
+      employeeId,
+      color,
+    }).then((resp) => {
+      this.getData(this.state.calId);
+    });
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -531,6 +543,7 @@ export default class App extends React.Component {
                 removeShift={this.removeShift}
                 weekNum={this.state.week}
                 admin={this.state.user.admin}
+                changeEmployeeColor={this.changeEmployeeColor}
               /> :
               [...Array(7)].map((c, i) => (
                 <Calendar

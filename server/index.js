@@ -211,6 +211,17 @@ app.post('/data', (req, res) => {
   });
 });
 
+app.post('/employee/color', (req, res) => {
+  const { employeeId, color } = req.body;
+  db.changeEmployeeColor(employeeId, color, (status, result) => {
+    if (status) {
+      res.status(200).send(result);
+    } else {
+      res.status(400).send(result);
+    }
+  });
+});
+
 app.listen(3333, () => {
   console.log('listening on port 3333');
 });

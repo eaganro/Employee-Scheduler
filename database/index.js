@@ -194,6 +194,17 @@ const getCalendars = (userID, callback) => {
   });
 };
 
+const changeEmployeeColor = (employeeId, color, callback) => {
+  connection.query(`UPDATE employees SET color='${color}' WHERE id=${employeeId}`, (err, result) => {
+    if (err) {
+      console.log(err);
+      callback(false, err);
+    } else {
+      callback(true, result);
+    }
+  });
+};
+
 module.exports = {
   addEmployee,
   removeEmployee,
@@ -210,4 +221,5 @@ module.exports = {
   addCalendar,
   removeCalendar,
   getCalendars,
+  changeEmployeeColor,
 };

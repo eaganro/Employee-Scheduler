@@ -6,7 +6,7 @@ import CalenderRow from './CalendarRow';
 import styles from '../styles/styles.css';
 
 const EmployeeCalendar = ({
-  employeeId, employeeData, times, changeET, removeShift, weekNum, admin,
+  employeeId, employeeData, times, changeET, removeShift, weekNum, admin, changeEmployeeColor,
 }) => {
   EmployeeCalendar.propTypes = {
     employeeId: PropTypes.number.isRequired,
@@ -16,6 +16,7 @@ const EmployeeCalendar = ({
     removeShift: PropTypes.func.isRequired,
     weekNum: PropTypes.number.isRequired,
     admin: PropTypes.bool.isRequired,
+    changeEmployeeColor: PropTypes.func.isRequired,
   };
 
   const topRow = [...Array(27)].map((x, i) => {
@@ -37,12 +38,24 @@ const EmployeeCalendar = ({
     );
   });
 
-  console.log(employeeData);
+  let colors = ['blue', 'red', 'green', 'yellow', 'orange'];
+
+  colors = colors.map(x => <option>{x}</option>);
+
   return (
     <div style={{ height: '80vh', margin: '20px' }}>
       <Header as="h3">
         {employeeData.name}
       </Header>
+      <select
+        defaultValue={employeeData.color}
+        onChange={e => (
+          changeEmployeeColor(employeeId, e.target.options[e.target.selectedIndex].value)
+        )}
+      >
+        {colors}
+      </select>
+      <br />
       {topRow}
       {[...Array(7)].map((e, i) => (
         <CalenderRow
