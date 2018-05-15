@@ -62,6 +62,15 @@ button {
   text-align: center;
 }
 
+.botRow {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  vertical-align: top;
+  text-align: center;
+}
+
 .calRow {
   background-color: lightgray;
   display: inline-block;

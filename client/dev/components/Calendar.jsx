@@ -102,6 +102,35 @@ export default class Calendar extends React.Component {
       });
     }
 
+    let totalWorkers = [...Array(26)].map(x => 0);
+    employeeRows.forEach((e) => {
+      let { shifts } = employees[e];
+      for (let i = 0; i < 26; i += 1) {
+        if ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
+        (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) {
+          if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart ||
+          (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd))) {
+            if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart2 ||
+            (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd2))) {
+              totalWorkers[i] += 1;
+            }
+          }
+        }
+      }
+    });
+    const botRow = [...Array(27)].map((x, i) => {
+      let text = '';
+      text = totalWorkers[i - 1];
+      if (i === 0) {
+        text = 'People Working: ';
+      }
+      return (
+        <div className={i === 0 ? styles.firstCol : styles.botRow}>
+          <span>{text}</span>
+        </div>
+      );
+    });
+
     return (
       <div className={styles.calendar}>
         <h3>{thisDate.toDateString()}</h3>
@@ -119,6 +148,7 @@ export default class Calendar extends React.Component {
             admin={admin}
           />
         ))}
+        {botRow}
         {admin ?
           <div>
             Add Employee: <br />

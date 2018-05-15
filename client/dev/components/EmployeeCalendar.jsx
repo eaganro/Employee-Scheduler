@@ -19,13 +19,14 @@ const EmployeeCalendar = ({
     changeEmployeeColor: PropTypes.func.isRequired,
   };
 
-  const topRow = [...Array(27)].map((x, i) => {
+  const topRow = [...Array(14)].map((x, i) => {
     let text = '';
-    if ((i - 1) % 2 === 0) {
-      text = `${8 + ((i - 1) / 2)}:00`;
-    } else {
-      text = `${7.5 + ((i - 1) / 2)}:30`;
-    }
+    text = `${8 + i}:00`;
+    // if ((i - 1) % 2 === 0) {
+    //   text = `${8 + ((i - 1) / 2)}:00`;
+    // } else {
+    //   text = `${7.5 + ((i - 1) / 2)}:30`;
+    // }
     if (i === 0) {
       text = '';
     }
