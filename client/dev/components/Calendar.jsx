@@ -9,7 +9,7 @@ export default class Calendar extends React.Component {
     super(props);
 
     this.state = {
-      sort: 'Alphabetically',
+      sort: 'Color',
     };
 
     this.changeSort = this.changeSort.bind(this);
