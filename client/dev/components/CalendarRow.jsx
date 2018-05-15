@@ -30,6 +30,19 @@ const CalenderRow = ({
     6: 'Sunday',
   };
 
+  const COLORS= {
+    red: 'rgba(255, 0, 0, 1)',
+    yellow: 'rgba(255, 255, 0, 1)',
+    green: 'rgba(51, 204, 51, 1)',
+    orange: 'rgba(255, 153, 0, 1)',
+    blue: 'rgba(0, 0, 255, 1)',
+    redb: 'rgba(255, 0, 0, 0.3)',
+    yellowb: 'rgba(255, 255, 0, 0.3)',
+    greenb: 'rgba(51, 204, 51, 0.3)',
+    orangeb: 'rgba(255, 153, 0, 0.3)',
+    blueb: 'rgba(0, 0, 255, 0.3)',
+  };
+
   const { shifts, name, color } = data;
   const timesArr = [];
   Object.keys(times).sort((a, b) => {
@@ -94,11 +107,15 @@ const CalenderRow = ({
           style={{
             backgroundColor: shifts[weekNum][dayNum] >= 0 &&
             (i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
-            (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd ? color : '',
+            (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd ? 
+            (((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart &&
+            (i / 2) + 8 < times[shifts[weekNum][dayNum]].bEnd) ||
+            ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart2 &&
+            (i / 2) + 8 < times[shifts[weekNum][dayNum]].bEnd2)) ? COLORS[color + 'b'] : COLORS[color] : '',
           }}
         >
           <span className={styles.cellText}>
-            {(shifts[weekNum][dayNum] >= 0) &&
+            {/* {(shifts[weekNum][dayNum] >= 0) &&
               ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
               (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) &&
               (((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart &&
@@ -106,7 +123,7 @@ const CalenderRow = ({
               ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart2 &&
               (i / 2) + 8 < times[shifts[weekNum][dayNum]].bEnd2)) ?
               'B' :
-            ' '}
+            ' '} */}
           </span>
         </div>
       ))}
