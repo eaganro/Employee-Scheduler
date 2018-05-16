@@ -27,6 +27,7 @@ export default class Login extends React.Component {
     this.employeeLogin = this.employeeLogin.bind(this);
     this.adminLogin = this.adminLogin.bind(this);
     this.signUp = this.signUp.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   componentWillMount() {
@@ -40,6 +41,14 @@ export default class Login extends React.Component {
         loggedIn: true,
       });
     }).catch(err => console.log('not logged in'));
+  }
+
+  logout() {
+    this.setState({
+      loggedIn: false,
+      username: '',
+      password: '',
+    });
   }
 
   nameChange(e) {
@@ -298,7 +307,7 @@ export default class Login extends React.Component {
     return (
       <div>
         {this.state.loggedIn ?
-          <App admin={this.state.admin} id={this.state.id} date={this.state.date} cal={this.state.calID} /> :
+          <App admin={this.state.admin} id={this.state.id} date={this.state.date} cal={this.state.calID} logout={this.logout} /> :
           login}
       </div>
     );

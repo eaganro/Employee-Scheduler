@@ -18,6 +18,7 @@ export default class App extends React.Component {
       id: PropTypes.number.isRequired,
       admin: PropTypes.bool.isRequired,
       date: PropTypes.string.isRequired,
+      logout: PropTypes.func.isRequired,
     };
 
 
@@ -455,6 +456,13 @@ export default class App extends React.Component {
             </Button>
           </div>
           <div style={{ position: 'relative' }}>
+            <Button
+              onClick={this.props.logout}
+              floated="right"
+              style={{ position: 'absolute', top: '0', right: '0' }}
+            >
+              Logout
+            </Button>
             <Button
               onClick={() => this.setState({ showPanel: !this.state.showPanel })}
               floated="right"
