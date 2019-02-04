@@ -153,6 +153,7 @@ export default class Login extends React.Component {
                   onChange={this.passChange}
                   icon="protect"
                   iconPosition="left"
+                  type="password"
                   placeholder="Employee Password..."
                 />
                 <Button
@@ -206,6 +207,7 @@ export default class Login extends React.Component {
                   onChange={this.passChange}
                   icon="protect"
                   iconPosition="left"
+                  type="password"
                   placeholder="Admin Password..."
                 />
                 <Button
@@ -259,6 +261,7 @@ export default class Login extends React.Component {
                   onChange={this.passChange}
                   icon="protect"
                   iconPosition="left"
+                  type="password"
                   placeholder="Admin Password..."
                 />
                 <br />
@@ -274,6 +277,7 @@ export default class Login extends React.Component {
                   onChange={this.empPassChange}
                   icon="protect"
                   iconPosition="left"
+                  type="password"
                   placeholder="Employee Password..."
                 />
                 <Button
