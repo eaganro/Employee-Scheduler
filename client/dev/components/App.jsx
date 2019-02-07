@@ -9,7 +9,8 @@ import Calendar from './Calendar';
 import TimeList from './TimeList';
 import CalList from './CalList';
 import EmployeeCalendar from './EmployeeCalendar';
-import styles from '../styles/styles.css';
+import styles from '../styles/styles.scss';
+import appStyle from '../styles/app.scss';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -49,6 +50,7 @@ export default class App extends React.Component {
       showPanel: true,
       employeePage: null,
       accordionIndexs: [],
+      initial: true,
     };
     this.addEmployee = this.addEmployee.bind(this);
     this.removeEmployee = this.removeEmployee.bind(this);
@@ -183,7 +185,6 @@ export default class App extends React.Component {
         schedule[data[i].week][data[i].day].push(data[i].employee_id);
       }
     }
-    console.log(employees);
     Object.keys(employees).forEach((e) => {
       employees[e].shifts.forEach((s, i) => {
         const sWeek = s.slice();
@@ -384,7 +385,6 @@ export default class App extends React.Component {
   }
 
   accordionClick(e, title) {
-    console.log(title);
     const { index } = title;
     const { accordionIndexs } = this.state;
     if (accordionIndexs.includes(index)) {
@@ -405,79 +405,91 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
-      <Container fluid>
-        <Container fluid style={{ display: 'grid', gridTemplateColumns: '3fr 2fr 3fr 1fr' }}>
-          <div style={{ position: 'relative', textAlign: 'center' }}>
-            <Button
-              onClick={() => this.setState({ week: this.state.week - 1 })}
-              style={{
+      <Container className={appStyle.topContainer}>
+        <div className={appStyle.topBar}>
+          <Container fluid style={{ display: 'grid', gridTemplateColumns: '3fr 2fr 3fr 1fr' }}>
+            <div style={{ position: 'relative', textAlign: 'center' }}>
+              <Button
+                onClick={() => this.setState({ week: this.state.week - 1 })}
+                style={{
                 visibility: this.state.week === 0 ? 'hidden' : 'visible',
                 position: 'absolute',
                 bottom: '0',
                 right: '0',
                 padding: '3px 3px 6px 3px',
-              }}
-              icon
-            >
-              <Icon size="big" name="arrow circle left" />
-            </Button>
-          </div>
-          <Header as="h2" textAlign="center">
-            <Dropdown
-              value={String(this.state.calId)}
-              options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
-              onChange={(e, data) => {
+                }}
+                icon
+              >
+                <Icon size="big" name="arrow circle left" />
+              </Button>
+            </div>
+            <Header as="h2" textAlign="center">
+              <Dropdown
+                value={String(this.state.calId)}
+                options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
+                onChange={(e, data) => {
                 this.setState({
-                  calId: data.value,
+                calId: data.value,
                 }, () => {
-                  this.getCalendars();
+                this.getCalendars();
                 });
-              }}
-            />
-            <Header.Subheader>
-              {`${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24)).toDateString()} -
-              ${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24) + (6*1000*60*60*24)).toDateString()}`}
-            </Header.Subheader>
-          </Header>
-          <div style={{ position: 'relative' }}>
-            <Button
-              onClick={this.nextWeek}
-              style={{
+                }}
+              />
+              <Header.Subheader>
+                {`${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24)).toDateString()} -
+                ${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24) + (6*1000*60*60*24)).toDateString()}`}
+              </Header.Subheader>
+            </Header>
+            <div style={{ position: 'relative' }}>
+              <Button
+                onClick={this.nextWeek}
+                style={{
                 position: 'absolute',
                 bottom: '0',
                 left: '0',
                 padding: '3px 3px 6px 3px',
-              }}
-              icon
-            >
-              <Icon size="big" name="arrow circle right" />
-            </Button>
-          </div>
-          <div style={{ position: 'relative' }}>
-            <Button
-              onClick={this.props.logout}
-              floated="right"
-              style={{ position: 'absolute', top: '0', right: '0' }}
-            >
-              Logout
-            </Button>
-            <Button
-              onClick={() => this.setState({ showPanel: !this.state.showPanel })}
-              floated="right"
-              style={{ position: 'absolute', bottom: '0', right: '0' }}
-            >
-              {this.state.showPanel ? 'Hide' : 'Show'} Panel
-            </Button>
-          </div>
-        </Container>
-        {this.state.user.admin ?
+                }}
+                icon
+              >
+                <Icon size="big" name="arrow circle right" />
+              </Button>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <Button
+                onClick={this.props.logout}
+                floated="right"
+                style={{ position: 'absolute', top: '0', right: '0' }}
+              >
+                Logout
+              </Button>
+              {this.state.showPanel ?
+              <Button
+                onClick={() => this.setState({ showPanel: !this.state.showPanel, initial: false })}
+                floated="right"
+                className={[appStyle.showHide, this.state.initial ? '' : appStyle.show].join(' ')}
+                key="show"
+              >
+                <Icon size="big" name={this.state.showPanel ? 'angle right' : 'angle left'} />
+              </Button> :
+              <Button
+                onClick={() => this.setState({ showPanel: !this.state.showPanel })}
+                floated="right"
+                className={[appStyle.showHide, appStyle.hide].join(' ')}
+                key="hide"
+              >
+                <Icon size="big" name={this.state.showPanel ? 'angle right' : 'angle left'} />
+              </Button>
+              }
+            </div>
+          </Container>
+          {this.state.user.admin ?
           <Button.Group compact>
             <Button compact onClick={this.copyWeek}>Copy Week</Button>
             <Button compact onClick={this.pasteWeek}>Paste Week</Button>
           </Button.Group> :
-        ''}
+          ''}
+        </div>
         <Sidebar.Pushable as={Container} fluid>
           <Sidebar
             animation="overlay"
@@ -485,10 +497,10 @@ export default class App extends React.Component {
             direction="right"
             visible={this.state.showPanel}
             vertical
-            style={{ boxShadow: '0 0 0' }}
+            className={appStyle.sidebar}
             fluid
           >
-            <Accordion as={Menu} vertical fluid exclusive={false}>
+            <Accordion as={Menu} vertical fluid exclusive={false} className={appStyle.accordion}>
               <Menu.Item name="caldendars">
                 <Accordion.Title
                   active={this.state.accordionIndexs.includes(0)}
@@ -541,39 +553,39 @@ export default class App extends React.Component {
               </Menu.Item>
             </Accordion>
           </Sidebar>
-          <Sidebar.Pusher style={{ overflow: 'scroll' }}>
+          <Sidebar.Pusher className={appStyle.pusher}>
             {this.state.employeePage ?
-              <EmployeeCalendar
-                employeeId={this.state.employeePage}
-                employeeData={this.state.employees[this.state.employeePage]}
-                times={this.state.times}
-                changeET={this.changeEmployeeTime}
-                removeShift={this.removeShift}
-                weekNum={this.state.week}
-                admin={this.state.user.admin}
-                changeEmployeeColor={this.changeEmployeeColor}
-              /> :
-              [...Array(7)].map((c, i) => (
-                <Calendar
-                  employees={this.state.employees}
-                  times={this.state.times}
-                  changeET={this.changeEmployeeTime}
-                  addES={this.addEmployeeShift}
-                  removeShift={this.removeShift}
-                  schedule={this.state.schedule}
-                  dayNum={i}
-                  weekNum={this.state.week}
-                  admin={this.state.user.admin}
-                  copyDay={this.copyDay}
-                  pasteDay={this.pasteDay}
-                  date={this.state.firstMon}
-                />
-              ))
+            <EmployeeCalendar
+              employeeId={this.state.employeePage}
+              employeeData={this.state.employees[this.state.employeePage]}
+              times={this.state.times}
+              changeET={this.changeEmployeeTime}
+              removeShift={this.removeShift}
+              weekNum={this.state.week}
+              admin={this.state.user.admin}
+              changeEmployeeColor={this.changeEmployeeColor}
+            /> :
+            [...Array(7)].map((c, i) => (
+            <Calendar
+              employees={this.state.employees}
+              times={this.state.times}
+              changeET={this.changeEmployeeTime}
+              addES={this.addEmployeeShift}
+              removeShift={this.removeShift}
+              schedule={this.state.schedule}
+              dayNum={i}
+              weekNum={this.state.week}
+              admin={this.state.user.admin}
+              copyDay={this.copyDay}
+              pasteDay={this.pasteDay}
+              date={this.state.firstMon}
+            />
+            ))
             }
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       </Container>
-    );
-  }
+      );
+}
 }
 

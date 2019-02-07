@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Header } from 'semantic-ui-react';
 
 import CalenderRow from './CalendarRow';
-import styles from '../styles/styles.css';
+import styles from '../styles/styles.scss';
 
 const EmployeeCalendar = ({
   employeeId, employeeData, times, changeET, removeShift, weekNum, admin, changeEmployeeColor,

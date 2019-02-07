@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from '../styles/styles.css';
+import styles from '../styles/styles.scss';
 
 const CalenderRow = ({
   times, dayNum, weekNum, admin, data, changeTime, removeShift, id, employeePage,
@@ -75,9 +75,6 @@ const CalenderRow = ({
   }).forEach((t) => {
     timesArr.push(<option value={t}>S: {`${times[t].tStart}-${times[t].tEnd}`} B1: {`${times[t].bStart}-${times[t].bEnd}`} {times[t].bEnd2 === 8 ? '' : `B2: ${times[t].bStart2}-${times[t].bEnd2}`}</option>);
   });
-  console.log(shifts);
-  console.log(times);
-  console.log(timesArr);
   return (
     <div>
       <div className={styles.firstCol}>

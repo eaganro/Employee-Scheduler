@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Container } from 'semantic-ui-react';
 
-import styles from '../styles/styles.css';
+import styles from '../styles/styles.scss';
 
 const Employee = ({
   data, removeEmployee, id, toEmployeeCalendar,

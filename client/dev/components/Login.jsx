@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Input, Button, Segment, Grid, Header } from 'semantic-ui-react';
+import styles from '../styles/styles.scss';
 
 import App from './App';
 
@@ -309,7 +310,7 @@ export default class Login extends React.Component {
     }
 
     return (
-      <div>
+      <div className={styles.topDiv}>
         {this.state.loggedIn ?
           <App admin={this.state.admin} id={this.state.id} date={this.state.date} cal={this.state.calID} logout={this.logout} /> :
           login}

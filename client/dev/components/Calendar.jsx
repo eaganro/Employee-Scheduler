@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CalenderRow from './CalendarRow';
-import styles from '../styles/styles.css';
+import styles from '../styles/styles.scss';
 
 export default class Calendar extends React.Component {
   constructor(props) {
