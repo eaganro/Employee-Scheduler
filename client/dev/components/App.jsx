@@ -80,6 +80,8 @@ export default class App extends React.Component {
     this.getData = this.getData.bind(this);
 
     this.changeEmployeeColor = this.changeEmployeeColor.bind(this);
+    this.changeCalendar = this.changeCalendar.bind(this);
+    this.backWeek = this.backWeek.bind(this);
   }
 
   componentWillMount() {
@@ -404,90 +406,67 @@ export default class App extends React.Component {
     });
   }
 
+  changeCalendar(e, data) {
+    this.setState({
+      calId: data.value,
+    }, () => {
+      this.getCalendars();
+    });
+  }
+
+  backWeek() {
+    this.setState({
+      week: this.state.week - 1
+    });
+  } 
+
   render() {
     return (
       <Container className={appStyle.topContainer}>
         <div className={appStyle.topBar}>
-          <Container fluid style={{ display: 'grid', gridTemplateColumns: '3fr 2fr 3fr 1fr' }}>
-            <div style={{ position: 'relative', textAlign: 'center' }}>
-              <Button
-                onClick={() => this.setState({ week: this.state.week - 1 })}
-                style={{
-                visibility: this.state.week === 0 ? 'hidden' : 'visible',
-                position: 'absolute',
-                bottom: '0',
-                right: '0',
-                padding: '3px 3px 6px 3px',
-                }}
-                icon
-              >
-                <Icon size="big" name="arrow circle left" />
-              </Button>
-            </div>
-            <Header as="h2" textAlign="center">
-              <Dropdown
-                value={String(this.state.calId)}
-                options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
-                onChange={(e, data) => {
-                this.setState({
-                calId: data.value,
-                }, () => {
-                this.getCalendars();
-                });
-                }}
-              />
-              <Header.Subheader>
-                {`${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24)).toDateString()} -
-                ${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24) + (6*1000*60*60*24)).toDateString()}`}
-              </Header.Subheader>
-            </Header>
-            <div style={{ position: 'relative' }}>
-              <Button
-                onClick={this.nextWeek}
-                style={{
-                position: 'absolute',
-                bottom: '0',
-                left: '0',
-                padding: '3px 3px 6px 3px',
-                }}
-                icon
-              >
-                <Icon size="big" name="arrow circle right" />
-              </Button>
-            </div>
-            <div style={{ position: 'relative' }}>
-              <Button
-                onClick={this.props.logout}
-                floated="right"
-                style={{ position: 'absolute', top: '0', right: '0' }}
-              >
-                Logout
-              </Button>
-              {this.state.showPanel ?
-              <Button
-                onClick={() => this.setState({ showPanel: !this.state.showPanel, initial: false })}
-                floated="right"
-                className={[appStyle.showHide, this.state.initial ? '' : appStyle.show].join(' ')}
-                key="show"
-              >
-                <Icon size="big" name={this.state.showPanel ? 'angle right' : 'angle left'} />
-              </Button> :
-              <Button
-                onClick={() => this.setState({ showPanel: !this.state.showPanel })}
-                floated="right"
-                className={[appStyle.showHide, appStyle.hide].join(' ')}
-                key="hide"
-              >
-                <Icon size="big" name={this.state.showPanel ? 'angle right' : 'angle left'} />
-              </Button>
-              }
-            </div>
-          </Container>
+          <Header as="h2" textAlign="center" className={appStyle.mainHeader}>
+            <Dropdown
+              className={appStyle.headerDropdown}
+              value={String(this.state.calId)}
+              options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
+              onChange={this.changeCalendar}
+            />
+            <Header.Subheader className={appStyle.subheader}>
+              {`${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24)).toDateString()} -
+              ${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24) + (6*1000*60*60*24)).toDateString()}`}
+            </Header.Subheader>
+          </Header>
+          <Button onClick={this.backWeek} icon
+            className={[appStyle.dateButton, this.state.week ? '' : appStyle.show, appStyle.left].join(' ')} >
+            <Icon size="big" name="arrow circle left" />
+          </Button>
+          <Button circular onClick={this.nextWeek} className={[appStyle.dateButton, appStyle.right].join(' ')} icon>
+            <Icon size="big" name="arrow circle right" />
+          </Button>
+          <button onClick={this.props.logout} className={[appStyle.logout, appStyle.simpleButton].join(' ')}>Logout</button>
+          {this.state.showPanel ?
+          <Button
+            onClick={() => this.setState({ showPanel: !this.state.showPanel, initial: false })}
+            floated="right"
+            className={[appStyle.showHide, this.state.initial ? '' : appStyle.show].join(' ')}
+            key="show"
+          >
+            <Icon size="big" name={this.state.showPanel ? 'angle right' : 'angle left'} />
+          </Button> :
+          <Button
+            onClick={() => this.setState({ showPanel: !this.state.showPanel })}
+            floated="right"
+            className={[appStyle.showHide, appStyle.hide].join(' ')}
+            key="hide"
+          >
+            <Icon size="big" name={this.state.showPanel ? 'angle right' : 'angle left'} />
+          </Button>
+          }
           {this.state.user.admin ?
-          <Button.Group compact>
-            <Button compact onClick={this.copyWeek}>Copy Week</Button>
-            <Button compact onClick={this.pasteWeek}>Paste Week</Button>
-          </Button.Group> :
+          <div className={appStyle.copyPaste}>
+            <button onClick={this.copyWeek} className={appStyle.simpleButton}>Copy Week</button>
+            <button onClick={this.pasteWeek} className={appStyle.simpleButton}>Paste Week</button>
+          </div> :
           ''}
         </div>
         <Sidebar.Pushable as={Container} fluid>
@@ -539,7 +518,7 @@ export default class App extends React.Component {
                 <Accordion.Title
                   active={this.state.accordionIndexs.includes(2)}
                   index={2}
-                  content={<Header><Icon name="time" />Manage Times</Header>}
+                  content={<Header><Icon name="time" />Manage Shifts</Header>}
                   onClick={this.accordionClick}
                 />
                 <Accordion.Content

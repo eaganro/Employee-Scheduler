@@ -56,6 +56,15 @@ button {
   margin-bottom: 100px;
   padding: 20px;
   min-width: 1250px;
+  background-color: gainsboro;
+
+  > div.topRow, div.botRow, div.firstCol {
+    background-color: seashell;
+  }
+
+  > div div:not(:last-child) {
+    background-color: seashell;
+  }
 }
 
 .topRow {

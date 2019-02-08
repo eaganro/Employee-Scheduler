@@ -8,15 +8,81 @@
 }
 
 .topBar {
-  background-color: papayawhip;
+  background-color: floralwhite;
+  height: 130px;
+  text-align: center;
+
+  .mainHeader {
+    position: relative;
+    top: 25px;
+
+    .headerDropdown {
+      position: relative;
+      left: 25px !important;
+      font-size: 48px;
+
+      i {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .subheader {
+    position: relative;
+    top: 27px;
+  }
+
+  .dateButton {
+    position: relative;
+    padding: 0px 0px 0px 0px !important;
+    background-color: transparent !important;
+
+    &.left {
+      top: 3px;
+      right: 115px;
+    }
+    &.right {
+      top: 15px;
+      left: 150px;
+    }
+    &.show {
+      visibility: hidden;
+    }
+  }
+
+  .logout {
+    position: absolute;
+    top: 0;
+    right: 90px;
+  }
+
+  .simpleButton {
+    border: none;
+    background-color: transparent;
+
+    &:hover {
+      color: lightgrey;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .copyPaste {
+    margin-left: 495px;
+    margin-top: 15px;
+    font-size: 10px;
+  }
 }
 
 .showHide {
-  position: absolute;
-  bottom: -55px;
+  position: relative;
+  top: 54px;
   right: 350px;
   padding: 0 !important;
   margin: 0 !important;
+  background-color: white !important;
   z-index: 10;
   
   i {

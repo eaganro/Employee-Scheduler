@@ -45,10 +45,12 @@ export default class Login extends React.Component {
   }
 
   logout() {
-    this.setState({
-      loggedIn: false,
-      username: '',
-      password: '',
+    axios.post('/logout', {}).then((data) => {
+      this.setState({
+        loggedIn: false,
+        username: '',
+        password: '',
+      });
     });
   }
 

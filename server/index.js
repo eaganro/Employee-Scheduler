@@ -186,6 +186,13 @@ app.post('/login/employee', (req, res) => {
   });
 });
 
+app.post('/logout', (req, res) => {
+  req.session.userId = null;
+  req.session.createdate = null;
+  req.session.admin = null;
+  res.status(200).send({});
+});
+
 app.post('/data', (req, res) => {
   const { userId } = req.body;
   db.getEmployees(userId, (statEmp, resultEmp) => {
