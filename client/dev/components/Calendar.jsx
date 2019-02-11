@@ -13,12 +13,21 @@ export default class Calendar extends React.Component {
     };
 
     this.changeSort = this.changeSort.bind(this);
+    this.addEmployee = this.addEmployee.bind(this);
   }
 
   changeSort() {
     this.setState({
       sort: this.state.sort === 'Alphabetically' ? 'Color' : 'Alphabetically',
     });
+  }
+
+  addEmployee(e) {
+    let { addES, dayNum, weekNum } = this.props; 
+    if (e.target.selectedIndex !== 0) {
+      addES(e.target.options[e.target.selectedIndex].getAttribute('data-id'), e.target.value, dayNum, weekNum);
+      e.target.selectedIndex = 0;
+    }
   }
 
   render() {
@@ -39,7 +48,7 @@ export default class Calendar extends React.Component {
       if (!schedule[weekNum][dayNum].includes(Number(e))) {
         empOpts.push(<option data-id={e}>{`${employees[e].name}`}</option>);
       }
-    });
+  });
     let thisDate = new Date(date.getTime());
     thisDate.setDate(thisDate.getDate() + dayNum + (weekNum*7));
 
@@ -58,86 +67,88 @@ export default class Calendar extends React.Component {
         <div className={i === 0 ? styles.firstCol : styles.topRow}>
           <span>
             {i === 0 ?
-              <button
-                onClick={this.changeSort}
-              >
-                {this.state.sort === 'Alphabetically' ? 'Sort Color' : 'Sort Alpha'}
-              </button>
-              : text
+            <button
+              onClick={this.changeSort}
+            >
+              {this.state.sort === 'Alphabetically' ? 'Sort Color' : 'Sort Alpha'}
+            </button>
+            : text
             }
           </span>
         </div>
-      );
+        );
     });
 
-    let employeeRows = schedule[weekNum][dayNum].slice();
-    if (this.state.sort === 'Alphabetically') {
-      employeeRows.sort((a, b) => {
-        const nameA = employees[a].name.toLowerCase().split(' ').slice(-1)[0];
-        const nameB = employees[b].name.toLowerCase().split(' ').slice(-1)[0];
-        if (nameA > nameB) {
-          return 1;
-        } else if (nameA < nameB) {
-          return -1;
-        }
-        return 0;
-      });
-    } else {
-      employeeRows.sort((a, b) => {
-        const nameA = employees[a].name.toLowerCase().split(' ').slice(-1)[0];
-        const nameB = employees[b].name.toLowerCase().split(' ').slice(-1)[0];
-        const colorA = employees[a].color;
-        const colorB = employees[b].color;
+  let employeeRows = schedule[weekNum][dayNum].slice();
+  if (this.state.sort === 'Alphabetically') {
+    employeeRows.sort((a, b) => {
+      const nameA = employees[a].name.toLowerCase().split(' ').slice(-1)[0];
+      const nameB = employees[b].name.toLowerCase().split(' ').slice(-1)[0];
+      if (nameA > nameB) {
+        return 1;
+      } else if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    });
+  } else {
+    employeeRows.sort((a, b) => {
+      const nameA = employees[a].name.toLowerCase().split(' ').slice(-1)[0];
+      const nameB = employees[b].name.toLowerCase().split(' ').slice(-1)[0];
+      const colorA = employees[a].color;
+      const colorB = employees[b].color;
 
-        if (colorA > colorB) {
-          return 1;
-        } else if (colorB > colorA) {
-          return -1;
-        } else if (nameA > nameB) {
-          return 1;
-        } else if (nameA < nameB) {
-          return -1;
-        }
-        return 0;
-      });
-    }
+      if (colorA > colorB) {
+        return 1;
+      } else if (colorB > colorA) {
+        return -1;
+      } else if (nameA > nameB) {
+        return 1;
+      } else if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    });
+  }
 
-    let totalWorkers = [...Array(26)].map(x => 0);
-    employeeRows.forEach((e) => {
-      let { shifts } = employees[e];
-      if (times[shifts[weekNum][dayNum]]) {
-        for (let i = 0; i < 26; i += 1) {
-          if ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
+  let totalWorkers = [...Array(26)].map(x => 0);
+  employeeRows.forEach((e) => {
+    let { shifts } = employees[e];
+    if (times[shifts[weekNum][dayNum]]) {
+      for (let i = 0; i < 26; i += 1) {
+        if ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
           (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) {
-            if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart ||
+          if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart ||
             (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd))) {
-              if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart2 ||
+            if ((((i / 2) + 8 < times[shifts[weekNum][dayNum]].bStart2 ||
               (i / 2) + 8 >= times[shifts[weekNum][dayNum]].bEnd2))) {
-                totalWorkers[i] += 1;
-              }
+              totalWorkers[i] += 1;
             }
           }
         }
       }
-    });
-    const botRow = [...Array(27)].map((x, i) => {
-      let text = '';
-      text = totalWorkers[i - 1];
-      if (i === 0) {
-        text = 'People Working: ';
-      }
-      return (
-        <div className={i === 0 ? styles.firstCol : styles.botRow}>
-          <span>{text}</span>
-        </div>
-      );
-    });
-
+    }
+  });
+  const botRow = [...Array(27)].map((x, i) => {
+    let text = '';
+    text = totalWorkers[i - 1];
+    if (i === 0) {
+      text = 'People Working: ';
+    }
     return (
-      <div className={styles.calendar}>
-        <h3>{thisDate.toDateString()}</h3>
-        {topRow}
-        {employeeRows.map(e => (
+      <div className={i === 0 ? styles.firstCol : styles.botRow}>
+        <span>{text}</span>
+      </div>
+      );
+  });
+
+  return (
+    <div className={styles.calendar}>
+      <h3>{thisDate.toDateString()}</h3>
+      <span>
+        <span>
+          {topRow}
+          {employeeRows.map(e => (
           <CalenderRow
             key={e}
             id={e}
@@ -149,28 +160,24 @@ export default class Calendar extends React.Component {
             removeShift={removeShift}
             admin={admin}
           />
-        ))}
-        {botRow}
-        {admin ?
-          <div>
-            Add Employee: <br />
-            <select onChange={(e) => {
-              if (e.target.selectedIndex !== 0) {
-                addES(e.target.options[e.target.selectedIndex].getAttribute('data-id'), e.target.value, dayNum, weekNum);
-                e.target.selectedIndex = 0;
-              }
-            }}
-            >
-              <option />
-              {empOpts}
-            </select>
-            <button onClick={() => copyDay(weekNum, dayNum)}>Copy</button>
-            <button onClick={() => pasteDay(weekNum, dayNum)}>Paste</button>
-          </div> :
-        ''}
-      </div>
+          ))}
+          {botRow}
+        </span>
+      </span>
+      {admin ?
+      <div>
+        Add Employee: <br />
+        <select onChange={this.addEmployee} className={styles.employeeSelect}>
+          <option />
+          {empOpts}
+        </select>
+        <button onClick={() => copyDay(weekNum, dayNum)}>Copy</button>
+        <button onClick={() => pasteDay(weekNum, dayNum)}>Paste</button>
+      </div> :
+      ''}
+    </div>
     );
-  }
+}
 }
 
 Calendar.propTypes = {

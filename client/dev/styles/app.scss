@@ -39,11 +39,11 @@
 
     &.left {
       top: 3px;
-      right: 115px;
+      right: 85px;
     }
     &.right {
       top: 15px;
-      left: 150px;
+      left: 175px;
     }
     &.show {
       visibility: hidden;
@@ -51,9 +51,9 @@
   }
 
   .logout {
-    position: absolute;
-    top: 0;
-    right: 90px;
+    position: relative;
+    left: 580px;
+    bottom: 80px;
   }
 
   .simpleButton {
@@ -70,8 +70,6 @@
   }
 
   .copyPaste {
-    margin-left: 495px;
-    margin-top: 15px;
     font-size: 10px;
   }
 }

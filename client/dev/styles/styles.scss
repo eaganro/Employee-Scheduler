@@ -55,14 +55,30 @@ button {
 .calendar {
   margin-bottom: 100px;
   padding: 20px;
-  min-width: 1250px;
   background-color: gainsboro;
+  width: 100%;
+  
+  > span {
+    width: 100%;
+    display: inline-block;
+    overflow-x: scroll;
+    scrollbar-width: none;
 
-  > div.topRow, div.botRow, div.firstCol {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > span {
+      width: 1185px;
+      display: inline-block;
+    }
+  }
+
+  div.topRow, div.botRow, div.firstCol {
     background-color: seashell;
   }
 
-  > div div:not(:last-child) {
+  div div {
     background-color: seashell;
   }
 }
@@ -74,6 +90,10 @@ button {
   border: 1px solid black;
   vertical-align: top;
   text-align: left;
+
+  span {
+    margin-left: 2px;
+  }
 }
 
 .botRow {
@@ -125,13 +145,41 @@ button {
 }
 
 .removeButton {
-  grid-column: 2;
+  position: relative;
+  bottom: 22px;
+  left: 35px;
   border: none;
-  background-color: red;
-  padding: 1px 3px;
+  background-color: transparent !important;
+  padding: 0 !important;
+
+  i {
+    font-size: 13px !important;
+  }
 }
 
 .removeButton:hover {
   background-color: darkred;
   cursor: pointer;
+}
+
+.hoursWorked {
+  font-size: 10px;
+  position: relative;
+  left: 85px;
+  bottom: 26px;
+}
+
+.employeeSelect {
+  width: 100px;
+}
+
+.employeeName {
+  display: inline-block;
+  width: 115px;
+  overflow-x: hidden;
+}
+
+.timeSelect {
+  position: relative;
+  bottom: 5px;
 }
