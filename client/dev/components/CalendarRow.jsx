@@ -74,10 +74,10 @@ const CalenderRow = ({
     }
     return 0;
   }).forEach((t) => {
-    timesArr.push(<option value={t}>S: {`${times[t].tStart}-${times[t].tEnd}`} B1: {`${times[t].bStart}-${times[t].bEnd}`} {times[t].bEnd2 === 8 ? '' : `B2: ${times[t].bStart2}-${times[t].bEnd2}`}</option>);
+    timesArr.push(<option value={t} key={t}>S: {`${times[t].tStart}-${times[t].tEnd}`} B1: {`${times[t].bStart}-${times[t].bEnd}`} {times[t].bEnd2 === 8 ? '' : `B2: ${times[t].bStart2}-${times[t].bEnd2}`}</option>);
 });
   return (
-    <div>
+    <div className={styles.fullRow}>
       <div className={styles.firstCol}>
         <span className={styles.employeeName}>{employeePage ? DAYS[dayNum] : name}</span>
         <br />
@@ -116,8 +116,9 @@ const CalenderRow = ({
         ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].bStart2 &&
         (i / 2) + 8 < times[shifts[weekNum][dayNum]].bEnd2)) ? COLORS[color + 'b'] : COLORS[color] : '',
         }}
+        key={i + "segment" + weekNum + dayNum}
       >
-        <span className={styles.cellText}>
+        <span className={styles.cellText} key={i + "span"}>
           {(shifts[weekNum][dayNum] >= 0) &&
           ((i / 2) + 8 >= times[shifts[weekNum][dayNum]].tStart &&
           (i / 2) + 8 < times[shifts[weekNum][dayNum]].tEnd) &&

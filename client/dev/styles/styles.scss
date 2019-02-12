@@ -124,9 +124,17 @@ button {
   vertical-align: top;
 }
 
+.calRow, .calRowOff, .topRow, .botRow {
+  position: relative;
+  left: 130px;
+}
+
 .cellText {
   position: relative;
   top: 25%;
+}
+
+.fullRow {
 }
 
 .firstCol {
@@ -136,6 +144,8 @@ button {
   border: 1px solid black;
   vertical-align: top;
   overflow: hidden;
+  position: absolute;
+  z-index: 10;
 }
 
 .manageList {

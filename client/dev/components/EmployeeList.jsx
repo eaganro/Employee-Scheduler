@@ -47,6 +47,7 @@ export default class EmployeeList extends React.Component {
         data={employees[e]}
         removeEmployee={removeEmployee}
         toEmployeeCalendar={toEmployeeCalendar}
+        key={e}
       />);
     });
 

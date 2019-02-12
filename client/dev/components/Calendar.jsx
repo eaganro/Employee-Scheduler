@@ -46,7 +46,7 @@ export default class Calendar extends React.Component {
       return 0;
     }).forEach((e) => {
       if (!schedule[weekNum][dayNum].includes(Number(e))) {
-        empOpts.push(<option data-id={e}>{`${employees[e].name}`}</option>);
+        empOpts.push(<option data-id={e} key={e}>{`${employees[e].name}`}</option>);
       }
   });
     let thisDate = new Date(date.getTime());
@@ -64,7 +64,7 @@ export default class Calendar extends React.Component {
         text = '';
       }
       return (
-        <div className={i === 0 ? styles.firstCol : styles.topRow}>
+        <div className={i === 0 ? styles.firstCol : styles.topRow} key={i + "top"}>
           <span>
             {i === 0 ?
             <button
@@ -136,7 +136,7 @@ export default class Calendar extends React.Component {
       text = 'People Working: ';
     }
     return (
-      <div className={i === 0 ? styles.firstCol : styles.botRow}>
+      <div className={i === 0 ? styles.firstCol : styles.botRow} key={i + "bot"}>
         <span>{text}</span>
       </div>
       );

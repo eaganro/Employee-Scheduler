@@ -475,9 +475,7 @@ export default class App extends React.Component {
             width="wide"
             direction="right"
             visible={this.state.showPanel}
-            vertical
             className={appStyle.sidebar}
-            fluid
           >
             <Accordion as={Menu} vertical fluid exclusive={false} className={appStyle.accordion}>
               <Menu.Item name="caldendars">
@@ -558,6 +556,7 @@ export default class App extends React.Component {
               copyDay={this.copyDay}
               pasteDay={this.pasteDay}
               date={this.state.firstMon}
+              key={`${this.state.week} ${i}`}
             />
             ))
             }

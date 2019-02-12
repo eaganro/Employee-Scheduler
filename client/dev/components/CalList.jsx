@@ -34,6 +34,7 @@ export default class CalList extends React.Component {
         data={calendars[c]}
         removeCalItem={removeCalItem}
         toCalendar={toCalendar}
+        key={c}
       />);
     });
     console.log(cals);

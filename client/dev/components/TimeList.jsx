@@ -100,6 +100,7 @@ export default class TimeList extends React.Component {
         id={Number(t)}
         data={times[t]}
         removeTime={removeTime}
+        key={t}
       />);
     });
 
