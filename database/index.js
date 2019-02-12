@@ -144,8 +144,10 @@ const adminLogin = (data, callback) => {
     password,
   } = data;
   connection.query(`SELECT * FROM users WHERE username='${username}' AND password='${password}';`, (err, result) => {
-    if (err) {
+    console.log('db', err, result);
+    if (err || result.length === 0) {
       callback(false, err);
+      return;
     }
     callback(true, result);
   });

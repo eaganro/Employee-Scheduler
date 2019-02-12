@@ -161,6 +161,7 @@ app.post('/signup', (req, res) => {
 
 app.post('/login/admin', (req, res) => {
   db.adminLogin(req.body, (stat, result) => {
+    console.log('asdfasdfsdf', stat, result);
     if (stat) {
       req.session.userId = result[0].id;
       req.session.createdate = result[0].createdate;
