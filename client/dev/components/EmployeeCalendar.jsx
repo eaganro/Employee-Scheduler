@@ -6,7 +6,7 @@ import CalenderRow from './CalendarRow';
 import styles from '../styles/styles.scss';
 
 const EmployeeCalendar = ({
-  employeeId, employeeData, times, changeET, removeShift, weekNum, admin, changeEmployeeColor,
+  employeeId, employeeData, times, changeET, removeShift, weekNum, changeEmployeeColor,
 }) => {
   EmployeeCalendar.propTypes = {
     employeeId: PropTypes.number.isRequired,
@@ -15,7 +15,6 @@ const EmployeeCalendar = ({
     changeET: PropTypes.func.isRequired,
     removeShift: PropTypes.func.isRequired,
     weekNum: PropTypes.number.isRequired,
-    admin: PropTypes.bool.isRequired,
     changeEmployeeColor: PropTypes.func.isRequired,
   };
 
@@ -68,7 +67,6 @@ const EmployeeCalendar = ({
           dayNum={i}
           weekNum={weekNum}
           removeShift={removeShift}
-          admin={admin}
           employeePage
         />
       ))}

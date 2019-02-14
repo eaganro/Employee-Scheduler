@@ -166,54 +166,6 @@ export default class TimeList extends React.Component {
           />
         </div>
       </Container>
-      // <div>
-        
-      //   <div>
-      //     <select onChange={this.startChange}>
-      //       <option>Shift Start</option>
-      //       {[...Array(25)].map((x, i) => (
-      //         <option>{8 + (i / 2)}</option>
-      //       ))}
-      //     </select>
-      //     <select onChange={this.endChange}>
-      //       <option>Shift End</option>
-      //       {[...Array(25)].map((x, i) => (
-      //         <option>{8 + (i / 2)}</option>
-      //       ))}
-      //     </select>
-
-      //     <select onChange={this.bStartChange}>
-      //       <option>Break Start</option>
-      //       {[...Array(25)].map((x, i) => (
-      //         <option>{8 + (i / 2)}</option>
-      //       ))}
-      //     </select>
-      //     <select onChange={this.bEndChange}>
-      //       <option>Break End</option>
-      //       {[...Array(25)].map((x, i) => (
-      //         <option>{8 + (i / 2)}</option>
-      //       ))}
-      //     </select>
-
-      //     <select onChange={this.bStart2Change}>
-      //       <option>Break 2 Start</option>
-      //       {[...Array(25)].map((x, i) => (
-      //         <option>{8 + (i / 2)}</option>
-      //       ))}
-      //     </select>
-      //     <select onChange={this.bEnd2Change}>
-      //       <option>Break 2 End</option>
-      //       {[...Array(25)].map((x, i) => (
-      //         <option>{8 + (i / 2)}</option>
-      //       ))}
-      //     </select>
-      //     <button
-      //       onClick={() => addTime(this.state)}
-      //     >
-      //       Add Time
-      //     </button>
-      //   </div>
-      // </div>
     );
   }
 }

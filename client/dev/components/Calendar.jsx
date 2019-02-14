@@ -32,7 +32,7 @@ export default class Calendar extends React.Component {
 
   render() {
     let {
-      schedule, employees, dayNum, weekNum, admin, copyDay, pasteDay, date, times, changeET, removeShift, addES,
+      schedule, employees, dayNum, weekNum, copyDay, pasteDay, date, times, changeET, removeShift, addES,
     } = this.props;
     const empOpts = [];
     Object.keys(employees).sort((a, b) => {
@@ -158,13 +158,11 @@ export default class Calendar extends React.Component {
             dayNum={dayNum}
             weekNum={weekNum}
             removeShift={removeShift}
-            admin={admin}
           />
           ))}
           {botRow}
         </span>
       </span>
-      {admin ?
       <div>
         Add Employee: <br />
         <select onChange={this.addEmployee} className={styles.employeeSelect}>
@@ -173,8 +171,7 @@ export default class Calendar extends React.Component {
         </select>
         <button onClick={() => copyDay(weekNum, dayNum)}>Copy</button>
         <button onClick={() => pasteDay(weekNum, dayNum)}>Paste</button>
-      </div> :
-      ''}
+      </div>
     </div>
     );
 }
@@ -185,7 +182,6 @@ Calendar.propTypes = {
   employees: PropTypes.object.isRequired,
   dayNum: PropTypes.number.isRequired,
   weekNum: PropTypes.number.isRequired,
-  admin: PropTypes.bool.isRequired,
   copyDay: PropTypes.func.isRequired,
   pasteDay: PropTypes.func.isRequired,
   date: PropTypes.instanceOf(Date).isRequired,

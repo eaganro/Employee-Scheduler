@@ -5,13 +5,12 @@ import { Button, Icon } from 'semantic-ui-react';
 import styles from '../styles/styles.scss';
 
 const CalenderRow = ({
-  times, dayNum, weekNum, admin, data, changeTime, removeShift, id, employeePage,
+  times, dayNum, weekNum, data, changeTime, removeShift, id, employeePage,
 }) => {
   CalenderRow.propTypes = {
     times: PropTypes.object.isRequired,
     dayNum: PropTypes.number.isRequired,
     weekNum: PropTypes.number.isRequired,
-    admin: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired,
     changeTime: PropTypes.func.isRequired,
     removeShift: PropTypes.func.isRequired,
@@ -81,7 +80,6 @@ const CalenderRow = ({
       <div className={styles.firstCol}>
         <span className={styles.employeeName}>{employeePage ? DAYS[dayNum] : name}</span>
         <br />
-        {admin ?
         <span className={styles.timeSelect}>
           <select
             style={{ maxWidth: '80px' }}
@@ -96,8 +94,7 @@ const CalenderRow = ({
           <Button onClick={() => removeShift(weekNum, dayNum, id)} icon className={styles.removeButton}>
             <Icon size="small" name="delete" color="red"/>
           </Button>
-        </span>:
-        ''}
+        </span>
         <div className={styles.hoursWorked}>Hrs: {shifts[weekNum][7]}</div>
       </div>
       {[...Array(26)].map((h, i) => (
