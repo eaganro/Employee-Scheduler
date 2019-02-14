@@ -33,10 +33,20 @@ const getEmployees = (userID, callback) => {
 
 const addTime = (state, callback) => {
   const {
-    start, end, bStart, bEnd, bStart2, bEnd2, id,
+    times, breaks, id,
   } = state;
-  connection.query(`INSERT INTO times (tStart, tEnd, bStart, bEnd, bStart2, bEnd2, user_id)
-    VALUES (${start}, ${end}, ${bStart}, ${bEnd}, ${bStart2}, ${bEnd2}, ${id})`, (err, result) => {
+  const starts = times.map((x, i) => 'tStart' + (i+1)).join(', ');
+  const ends = times.map((x, i) => 'tEnd' + (i+1)).join(', ');
+  const bStarts = breaks.map((x, i) => 'bStart' + (i+1)).join(', ');
+  const bEnds = breaks.map((x, i) => 'bEnd' + (i+1)).join(', ');
+
+  const startsV = times.map((x) => x.start).join(', ');
+  const endsV = times.map((x) => x.end).join(', ');
+  const bStartsV = breaks.map((x) => x.start).join(', ');
+  const bEndsV = breaks.map((x) => x.end).join(', ');
+
+  connection.query(`INSERT INTO times (${starts}, ${ends}, ${bStarts}, ${bEnds}, user_id)
+    VALUES (${startsV}, ${endsV}, ${bStartsV}, ${bEndsV}, ${id})`, (err, result) => {
     if (err) {
       callback(false, err);
     }
