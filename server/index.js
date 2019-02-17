@@ -66,6 +66,26 @@ app.post('/time/add', (req, res) => {
     }
   });
 });
+app.put('/time', (req, res) => {
+  db.updateTime(req.body, (stat, result) => {
+    if (stat) {
+      res.status(200).send(result);
+    } else {
+      res.status(400).send(result);
+    }
+  });
+});
+
+app.get('/time', (req, res) => {
+  db.getTime(req.query.id, (stat, result) => {
+    if (stat) {
+      res.status(200).send(result);
+    } else {
+      res.status(400).send(result);
+    }
+
+  });
+});
 
 app.post('/time/remove', (req, res) => {
   db.removeTime(req.body, (stat, result) => {
@@ -228,6 +248,10 @@ app.post('/employee/color', (req, res) => {
       res.status(400).send(result);
     }
   });
+});
+
+app.get('*', (req, res) => {
+  console.log(req);
 });
 
 app.listen(3334, () => {

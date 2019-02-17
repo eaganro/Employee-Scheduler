@@ -53,6 +53,7 @@ export default class App extends React.Component {
       initial: true,
       logout: false,
       loading: true,
+      toCreateTime: false,
     };
     this.addEmployee = appFunctions.addEmployee.bind(this);
     this.removeEmployee = appFunctions.removeEmployee.bind(this);
@@ -106,25 +107,27 @@ export default class App extends React.Component {
   render() {
     if (this.state.logout) {
       return <Redirect push to="/" />; 
-    } else if (this.state.loading) {
+    } else if (this.state.toCreateTime) {
+      return <Redirect push to="/create/time" />; 
+    }
+    else if (this.state.loading) {
       return (
         <div>Loading</div>
       );
     }
     console.log(this.state.firstMon);
     return (
-      <div className={styles.topDiv}>
-        <Container className={appStyle.topContainer}>
-          <div className={appStyle.topBar}>
-            <Header as="h2" textAlign="center" className={appStyle.mainHeader}>
-              <Dropdown
-                className={appStyle.headerDropdown}
-                value={String(this.state.calId)}
-                options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
-                onChange={this.changeCalendar}
-              />
-              <Header.Subheader className={appStyle.subheader}>
-                {`${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24)).toDateString()} -
+      <Container className={appStyle.topContainer}>
+        <div className={appStyle.topBar}>
+          <Header as="h2" textAlign="center" className={appStyle.mainHeader}>
+            <Dropdown
+              className={appStyle.headerDropdown}
+              value={String(this.state.calId)}
+              options={Object.keys(this.state.calendars).map(c => ({ text: this.state.calendars[c].name, value: c }))}
+              onChange={this.changeCalendar}
+            />
+            <Header.Subheader className={appStyle.subheader}>
+              {`${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24)).toDateString()} -
               ${new Date(this.state.firstMon.getTime() + (this.state.week*7*1000*60*60*24) + (6*1000*60*60*24)).toDateString()}`}
             </Header.Subheader>
           </Header>
@@ -203,6 +206,9 @@ export default class App extends React.Component {
                 />
               </Menu.Item>
               <Menu.Item name="times">
+                <button onClick={() => this.setState({ toCreateTime: true })}>
+                  To Create Time
+                </button>
                 <Accordion.Title
                   active={this.state.accordionIndexs.includes(2)}
                   index={2}
@@ -251,7 +257,6 @@ export default class App extends React.Component {
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       </Container>
-    </div>
     );
   }
 }

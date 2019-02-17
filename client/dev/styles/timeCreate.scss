@@ -1,0 +1,34 @@
+.timeBlockContainer {
+  width: 1008px;
+
+  .timeBlock {
+    display: inline-block;
+    height: 40px;
+    width: 42px;
+    background-color: white;
+    border: 1px solid black;
+
+    .quarterTime {
+      display: inline-block;
+      height: 40px;
+      width: 10px;
+
+      &.off {
+        background-color: transparent;
+      }
+
+      &.on {
+        background-color: blue;
+      }
+
+      &.break {
+        background-color: green;
+      }
+
+      &:hover {
+        filter: brightness(85%);
+      }
+    }
+  }
+  
+}

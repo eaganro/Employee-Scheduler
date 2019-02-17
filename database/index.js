@@ -33,21 +33,65 @@ const getEmployees = (userID, callback) => {
 
 const addTime = (state, callback) => {
   const {
-    times, breaks, id,
+    time, id,
   } = state;
-  const starts = times.map((x, i) => 'tStart' + (i+1)).join(', ');
-  const ends = times.map((x, i) => 'tEnd' + (i+1)).join(', ');
-  const bStarts = breaks.map((x, i) => 'bStart' + (i+1)).join(', ');
-  const bEnds = breaks.map((x, i) => 'bEnd' + (i+1)).join(', ');
 
-  const startsV = times.map((x) => x.start).join(', ');
-  const endsV = times.map((x) => x.end).join(', ');
-  const bStartsV = breaks.map((x) => x.start).join(', ');
-  const bEndsV = breaks.map((x) => x.end).join(', ');
+  let timeCols = '';
+  let timeVals = '';
+  time.forEach((hour, i) => {
+    hour.forEach((q, j) => {
+      if (i < 10) {
+        timeCols += `, time0${i}${j}`;
+      } else {
+        timeCols += `, time${i}${j}`;
+      }
+      timeVals += `, '${q}'`;
+    });
+  });
+  timeCols = timeCols.slice(2);
+  timeVals = timeVals.slice(2);
 
-  connection.query(`INSERT INTO times (${starts}, ${ends}, ${bStarts}, ${bEnds}, user_id)
-    VALUES (${startsV}, ${endsV}, ${bStartsV}, ${bEndsV}, ${id})`, (err, result) => {
+  connection.query(`INSERT INTO times (${timeCols}, user_id)
+    VALUES (${timeVals}, ${id})`, (err, result) => {
     if (err) {
+      console.log(err);
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+};
+
+const updateTime = (state, callback) => {
+  const {
+    time, timeId,
+  } = state;
+
+  let timeUpdate = '';
+  time.forEach((hour, i) => {
+    hour.forEach((q, j) => {
+      if (i < 10) {
+        timeUpdate += `, time0${i}${j} = '${q}'`;
+      } else {
+        timeUpdate += `, time${i}${j} = '${q}'`;
+      }
+    });
+  });
+  timeUpdate = timeUpdate.slice(2);
+
+  connection.query(`UPDATE times SET ${timeUpdate}
+    WHERE id = ${timeId}`, (err, result) => {
+    if (err) {
+      console.log(err);
+      callback(false, err);
+    }
+    callback(true, result);
+  });
+};
+
+const getTime = (id, callback) => {
+  connection.query(`SELECT * FROM times WHERE id=${id}`, (err, result) => {
+    if (err) {
+      console.log(err);
       callback(false, err);
     }
     callback(true, result);
@@ -116,15 +160,13 @@ const signUp = (data, callback) => {
   const {
     username,
     password,
-    empname,
-    emppass,
   } = data;
   let date = new Date();
   let month = date.getUTCMonth() + 1;
   let day = date.getUTCDate();
   let year = date.getUTCFullYear();
-  connection.query(`INSERT INTO users (username, password, empname, emppassword, createdate)
-  VALUES ('${username}', '${password}', '${empname}', '${emppass}', '${year}-${month}-${day}');`, (err, ins) => {
+  connection.query(`INSERT INTO users (username, password, createdate)
+  VALUES ('${username}', '${password}', '${year}-${month}-${day}');`, (err, ins) => {
     if (err) {
       callback(false, err);
     } else {
@@ -224,6 +266,8 @@ module.exports = {
   addTime,
   removeTime,
   getTimes,
+  getTime,
+  updateTime,
   addShift,
   removeShift,
   getShifts,
